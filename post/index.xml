@@ -5,12 +5,292 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 12 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 22 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon-192.png</url>
       <title>Posts</title>
       <link>/post/</link>
     </image>
+    
+    <item>
+      <title>我的R markdown中文说明</title>
+      <link>/post/r_sta/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/post/r_sta/</guid>
+      <description>
+
+
+&lt;div id=&#34;rmarkdown&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;1.Rmarkdown是什么？&lt;/h1&gt;
+&lt;p&gt;R Markdown是由&lt;del&gt;91大神&lt;/del&gt;R大神&lt;strong&gt;谢益辉&lt;/strong&gt;写的R包，R markdown 通过R来书写可重复动态报告的一种格式。利用它在幻灯片、pdf、html文档、Word文件中嵌入R代码和结果。其官方网站为：&lt;a href=&#34;https://rmarkdown.rstudio.com/&#34; class=&#34;uri&#34;&gt;https://rmarkdown.rstudio.com/&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rmarkdown-1&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2.如何使用Rmarkdown？&lt;/h1&gt;
+&lt;p&gt;使用Rmarkdown，需要安装rmarkdown包，代码如下：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#install.packages(&amp;quot;rmarkdown&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;R Markdown 的工作流程：
+&lt;img src=&#34;http://applied-r.com/wp-content/uploads/2019/01/rmarkdown_workflow.png&#34; width=&#34;300&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;markdown&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;3. markdown的基本语法&lt;/h1&gt;
+&lt;div id=&#34;section&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;3.1代码块设置&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;echo=FALSE最终的文档中不会显示代码，只会显示代码运行的结果和图像&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;results=“hide”隐藏结果，显示图像&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;include=FALSE隐藏代码和运行的输出（写报告时可使用include=FALSE来隐藏所有的代码，从而突出图像。）&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;fig.show=“hide” 隐藏图像&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;对于图像，可以通过fig.width和fig.height来设置宽和高，例如:&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cat(c(&amp;quot;```{r scatterplot, fig.width=4, fig.height=4.5}&amp;quot;,&amp;quot;```&amp;quot;),sep=&amp;#39;\n&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ```{r scatterplot, fig.width=4, fig.height=4.5}
+## ```&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;x&amp;lt;-1:10
+y&amp;lt;-6:15
+plot(x,y)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;../post/R_sta_files/figure-html/scatterplot-1.png&#34; width=&#34;384&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果想要避免每次使用代码块都重复敲代码来设置代码块，可按如下设置初始代码块：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path=&amp;#39;Figs/&amp;#39;,
+                      #echo=FALSE, warning=FALSE, message=FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;warning=FALSE 和message=FALSE最终文档中不会显示R软件任何的提示信息， fig.path=’Figs/’把图片保存在Figs子文件夹中（默认情况下图片不会被保存，注意Figs后面的斜线“/”不可少，否则图片会以Figs为文件名开头被保存在主目录中）。 如果在某个特定代码块中需要不一样的设置，可以单独设置该代码块。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;行内代码(In-line code)：例如，这是ｉｒｉｓ数据集的第一行第一列 5.1.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;必须写在一行内，不含空格和句点，可以使用-和_&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;3.2文字格式&lt;/h2&gt;
+&lt;p&gt;一些基本的文本格式命令如下所示：
+&lt;embed src=&#34;D:/future_plan/rmarkdown-chinese_01.tif&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;r-markdown&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R markdown写论文的格式包&lt;/h2&gt;
+&lt;p&gt;今天隆重介绍这个解救polisci,econ, sociology的明星package：stargazer。这个包有多强大呢：能直接输出符合期刊标准的回归分析表，这东西有多烦想必写过定量文章的都有体会。名字取得也很有意思：stargazer，LOL，星星收集者。炉石里面有张7费777的生物叫staraligner，台词是：stars are aligned。这里借这个包的名字祝各位研究者：stars are collected。想哪里显著就哪里显著，想哪里不显著哪里就不显著。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Install_And_Load &amp;lt;- function(Required_Packages){
+  Remaining_Packages &amp;lt;- Required_Packages[!(Required_Packages %in% installed.packages()[,&amp;quot;Package&amp;quot;])];
+  
+  if(length(Remaining_Packages)) {
+    install.packages(Remaining_Packages);
+  }
+  for(package_name in Required_Packages){
+    library(package_name,character.only=TRUE,quietly=TRUE);
+  }
+}
+
+Required_Packages=c(&amp;quot;MASS&amp;quot;, &amp;quot;stargazer&amp;quot;,&amp;quot;ggplot2&amp;quot;)#如需要用到以上几个包
+Install_And_Load(Required_Packages)
+
+
+library(MASS)
+library(stargazer)
+library(ggplot2)
+mydata &amp;lt;- Boston
+attach(mydata)
+m1 &amp;lt;- lm(medv ~ crim)
+m2 &amp;lt;- lm(medv ~ crim + zn)
+stargazer(m1, m2, type = &amp;quot;html&amp;quot;, header = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style=&#34;text-align:center&#34;&gt;
+&lt;tr&gt;
+&lt;td colspan=&#34;3&#34; style=&#34;border-bottom: 1px solid black&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td colspan=&#34;2&#34;&gt;
+&lt;em&gt;Dependent variable:&lt;/em&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;td colspan=&#34;2&#34; style=&#34;border-bottom: 1px solid black&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td colspan=&#34;2&#34;&gt;
+medv
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+(1)
+&lt;/td&gt;
+&lt;td&gt;
+(2)
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan=&#34;3&#34; style=&#34;border-bottom: 1px solid black&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+crim
+&lt;/td&gt;
+&lt;td&gt;
+-0.415&lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td&gt;
+-0.352&lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+(0.044)
+&lt;/td&gt;
+&lt;td&gt;
+(0.043)
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+zn
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;td&gt;
+0.116&lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;td&gt;
+(0.016)
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+Constant
+&lt;/td&gt;
+&lt;td&gt;
+24.033&lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td&gt;
+22.486&lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+(0.409)
+&lt;/td&gt;
+&lt;td&gt;
+(0.442)
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan=&#34;3&#34; style=&#34;border-bottom: 1px solid black&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+Observations
+&lt;/td&gt;
+&lt;td&gt;
+506
+&lt;/td&gt;
+&lt;td&gt;
+506
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+R&lt;sup&gt;2&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td&gt;
+0.151
+&lt;/td&gt;
+&lt;td&gt;
+0.234
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+Adjusted R&lt;sup&gt;2&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td&gt;
+0.149
+&lt;/td&gt;
+&lt;td&gt;
+0.231
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+Residual Std. Error
+&lt;/td&gt;
+&lt;td&gt;
+8.484 (df = 504)
+&lt;/td&gt;
+&lt;td&gt;
+8.065 (df = 503)
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+F Statistic
+&lt;/td&gt;
+&lt;td&gt;
+89.486&lt;sup&gt;***&lt;/sup&gt; (df = 1; 504)
+&lt;/td&gt;
+&lt;td&gt;
+76.824&lt;sup&gt;***&lt;/sup&gt; (df = 2; 503)
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan=&#34;3&#34; style=&#34;border-bottom: 1px solid black&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;
+&lt;em&gt;Note:&lt;/em&gt;
+&lt;/td&gt;
+&lt;td colspan=&#34;2&#34; style=&#34;text-align:right&#34;&gt;
+&lt;sup&gt;&lt;em&gt;&lt;/sup&gt;p&amp;lt;0.1; &lt;sup&gt;&lt;strong&gt;&lt;/sup&gt;p&amp;lt;0.05; &lt;sup&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/sup&gt;p&amp;lt;0.01
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Writing technical content in Academic</title>
