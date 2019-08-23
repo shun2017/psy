@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="彭顺 (Shun Peng)">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="1.准备工作library(rvest)## Warning: package &#39;rvest&#39; was built under R version 3.5.3## Loading required package: xml2## Warning: package &#39;xml2&#39; was built under R version 3.5.2library(magrittr)library(stringr)## Warning: package &#39;stringr&#39; was built under R version 3.5.2library(jiebaR)## Warning: package &#39;jiebaR&#39; was built under R version 3.5.3## Loading required package: jiebaRD## Warning: package &#39;jiebaRD&#39; was built under R version 3.5.3library(wordcloud2)## Warning: package &#39;wordcloud2&#39; was built under R version 3.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/psyscien/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="anonymous">
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="../../css/academic.min.3072054fc61fe865aa34bcb366de141d.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="../../index.webmanifest">
+  <link rel="icon" type="image/png" href="../../img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/psyscien/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Psychology &lt;- R and Python">
+  <meta property="og:url" content="/post/psyscien/">
+  <meta property="og:title" content="心理科学2018论文挖掘与统计 | Psychology &lt;- R and Python">
+  <meta property="og:description" content="1.准备工作library(rvest)## Warning: package &#39;rvest&#39; was built under R version 3.5.3## Loading required package: xml2## Warning: package &#39;xml2&#39; was built under R version 3.5.2library(magrittr)library(stringr)## Warning: package &#39;stringr&#39; was built under R version 3.5.2library(jiebaR)## Warning: package &#39;jiebaR&#39; was built under R version 3.5.3## Loading required package: jiebaRD## Warning: package &#39;jiebaRD&#39; was built under R version 3.5.3library(wordcloud2)## Warning: package &#39;wordcloud2&#39; was built under R version 3."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+    
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>心理科学2018论文挖掘与统计 | Psychology &lt;- R and Python</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Psychology &lt;- R and Python</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link  active" href="../../"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="../../#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="../../#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">心理科学2018论文挖掘与统计</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="" itemprop="datePublished">
+<meta content="" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Jan 1, 0001</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    12 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/psyscien/&amp;text=%e5%bf%83%e7%90%86%e7%a7%91%e5%ad%a62018%e8%ae%ba%e6%96%87%e6%8c%96%e6%8e%98%e4%b8%8e%e7%bb%9f%e8%ae%a1" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/psyscien/&amp;t=%e5%bf%83%e7%90%86%e7%a7%91%e5%ad%a62018%e8%ae%ba%e6%96%87%e6%8c%96%e6%8e%98%e4%b8%8e%e7%bb%9f%e8%ae%a1" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e5%bf%83%e7%90%86%e7%a7%91%e5%ad%a62018%e8%ae%ba%e6%96%87%e6%8c%96%e6%8e%98%e4%b8%8e%e7%bb%9f%e8%ae%a1&amp;body=/post/psyscien/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/psyscien/&amp;title=%e5%bf%83%e7%90%86%e7%a7%91%e5%ad%a62018%e8%ae%ba%e6%96%87%e6%8c%96%e6%8e%98%e4%b8%8e%e7%bb%9f%e8%ae%a1" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e5%bf%83%e7%90%86%e7%a7%91%e5%ad%a62018%e8%ae%ba%e6%96%87%e6%8c%96%e6%8e%98%e4%b8%8e%e7%bb%9f%e8%ae%a1%20/post/psyscien/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/psyscien/&amp;title=%e5%bf%83%e7%90%86%e7%a7%91%e5%ad%a62018%e8%ae%ba%e6%96%87%e6%8c%96%e6%8e%98%e4%b8%8e%e7%bb%9f%e8%ae%a1" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+<script src="../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="../../rmarkdown-libs/wordcloud2/wordcloud.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/wordcloud2/wordcloud2-all.js"></script>
+<script src="../../rmarkdown-libs/wordcloud2/hover.js"></script>
+<script src="../../rmarkdown-libs/wordcloud2-binding/wordcloud2.js"></script>
+
+
+<div id="section" class="section level1">
+<h1>1.准备工作</h1>
+<pre class="r"><code>library(rvest)</code></pre>
+<pre><code>## Warning: package &#39;rvest&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Loading required package: xml2</code></pre>
+<pre><code>## Warning: package &#39;xml2&#39; was built under R version 3.5.2</code></pre>
+<pre class="r"><code>library(magrittr)
+library(stringr)</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
+<pre class="r"><code>library(jiebaR)</code></pre>
+<pre><code>## Warning: package &#39;jiebaR&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Loading required package: jiebaRD</code></pre>
+<pre><code>## Warning: package &#39;jiebaRD&#39; was built under R version 3.5.3</code></pre>
+<pre class="r"><code>library(wordcloud2)</code></pre>
+<pre><code>## Warning: package &#39;wordcloud2&#39; was built under R version 3.5.3</code></pre>
+<div id="section-1" class="section level2">
+<h2>1.1打开网页节点</h2>
+<pre class="r"><code>tag_title &lt;- &quot;.J_biaoti&quot; # 论文题目
+tag_author&lt;-&quot;.J_author_cn&quot; #论文作者
+tag_institution&lt;-&quot;//td&quot;#作者单位
+tag_abstract&lt;-&quot;.J_zhaiyao&quot;#摘要</code></pre>
+</div>
+</div>
+<div id="section-2" class="section level1">
+<h1>2.爬取网络</h1>
+<p>由于心理科学2018年度文章的网页编号是从<a href="https://www.psysci.org/CN/abstract/abstract10038" class="uri">https://www.psysci.org/CN/abstract/abstract10038</a>到<a href="https://www.psysci.org/CN/abstract/abstract10258" class="uri">https://www.psysci.org/CN/abstract/abstract10258</a>,因此，我们使用for loop来循环爬取网页。</p>
+<p>首先，设定一个空的数据框，以保存爬取的网页数据</p>
+<pre class="r"><code>psysin_2018_1&lt;-data.frame(title = NULL,author = NULL, 
+                           institution = NULL, keywords = NULL,
+                           stringsAsFactors = F)</code></pre>
+<p>其次，进行循环爬取</p>
+<pre class="r"><code>for (n in 10038:10258) {
+  
+  myurl &lt;- paste0(&quot;https://www.psysci.org/CN/abstract/abstract&quot;, n, &quot;.shtml&quot;, sep = &quot;&quot;)
+  page_n &lt;- read_html(x = myurl) 
+  
+
+  #开始抓取
+  title_n &lt;- html_nodes(x = page_n,css = tag_title)%&gt;% html_text()
+  author_n&lt;- html_nodes(x = page_n, css = tag_author)%&gt;% html_text()
+  institution_n&lt;- html_nodes(x = page_n, xpath = tag_institution)%&gt;% html_text()
+  abstract_n&lt;- html_nodes(x = page_n, css = tag_abstract)%&gt;% html_text()
+  
+  #摘要
+  abstract_n &lt;- gsub(&quot;\r&quot;, &quot;&quot;, abstract_n)
+  abstract_n &lt;- gsub(&quot;\n&quot;, &quot;&quot;, abstract_n)
+  abstract_n &lt;- gsub(&quot;\t&quot;, &quot;&quot;, abstract_n)
+  #关键词
+  keywords_n&lt;-abstract_n[5]#关键词处于爬取摘要信息的第五行
+  
+  #作者单位
+  institution_n&lt;- institution_n[24]
+  
+  # 合并向量为数据框
+  paper_work_n &lt;- data.frame(title = title_n,
+                             author = author_n,
+                             institution = institution_n,
+                             keywords = keywords_n,
+                             stringsAsFactors = FALSE)
+  
+  psysin_2018_1 &lt;- rbind(psysin_2018_1, paper_work_n) # 添加到psysin2018内
+  
+}</code></pre>
+</div>
+<div id="section-3" class="section level1">
+<h1>3.数据清理与处理</h1>
+<div id="section-4" class="section level2">
+<h2>3.1作者的数据清理与处理</h2>
+<pre class="r"><code>author_2018&lt;-gsub(&quot;[1-9]&quot;, &quot;&quot;,psysin_2018_1[,2])#去除作者序号</code></pre>
+</div>
+<div id="section-5" class="section level2">
+<h2>3.2单位的数据清理</h2>
+<pre class="r"><code>#去除单位序号
+institution_2018&lt;-gsub(&quot;[1-9]&quot;, &quot;&quot;,psysin_2018_1[,3])
+
+#去除单位的首个符号
+for (i in 1:length(institution_2018)) {
+  if(str_sub(institution_2018[i], start = 1, end = 2)==&quot;. &quot;){
+  institution_2018[i]=str_sub(institution_2018[i], start = 2, end = -1)
+}else{
+  next
+}
+  
+}
+
+#合并多余的字符
+a&lt;-c(&quot;华中师范大学&quot;,&quot;北京师范大学&quot;,&quot;华东师范大学&quot;,&quot;西南大学&quot;,&quot;华南师范大学&quot;,&quot;北京大学&quot;,&quot;中国科学院&quot;,&quot;江西师范大学&quot;,
+     &quot;天津师范大学&quot;,&quot;山东师范大学&quot;,&quot;浙江师范大学&quot;,&quot;福建师范大学&quot;,&quot;陕西师范大学&quot;,&quot;西北师范大学&quot;,&quot;辽宁师范大学&quot;,&quot;南京师范大学&quot;,
+     &quot;中国人民大学&quot;,&quot;西北师范大学&quot;,&quot;东北师范大学&quot;,&quot;浙江大学&quot;,&quot;北京大学&quot;,&quot;暨南大学&quot;)
+     
+for (i in a) {
+  institution_2018[grepl(i,institution_2018,fixed = T)==TRUE] &lt;- i
+}
+
+###只保留第一个单位
+write.csv(institution_2018,&quot;D:/future_plan/Rcourse/psysin2018/institution.csv&quot;)#只能手动了
+institution_2018&lt;-read.csv(&quot;D:/future_plan/Rcourse/psysin2018/institution.csv&quot;,header = T)</code></pre>
+</div>
+<div id="section-6" class="section level2">
+<h2>3.3关键词数据清理</h2>
+<pre class="r"><code>#去除关键词空格
+keyword_2018&lt;-gsub(&quot;&lt;U+00A0&gt;&quot;,&quot;&quot;,psysin_2018_1[,4])
+
+#去除“关键词”:几个字
+keyword_2018&lt;-gsub(&quot;关键词&quot;,&quot;&quot;,keyword_2018)</code></pre>
+</div>
+</div>
+<div id="section-7" class="section level1">
+<h1>4.制作词云</h1>
+<div id="section-8" class="section level2">
+<h2>4.1制作作者词云</h2>
+<pre class="r"><code>#按逗号分成不同的列
+split_author&lt;-str_split(author_2018,&quot;,&quot;)
+
+#将去除逗号的list转成vector
+author1 = as.vector(unlist(split_author))
+
+#计算作者频率
+author_freq &lt;- freq(author1) 
+
+#制作词云
+wordcloud2(author_freq)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"word":["郭虹蔓","王晓峰","戴艳","周同刘俊升","李抗","肖奕琳","周孟孟","方小婷","袁涤","卑力添","方建东","常保瑞","胡小勇","朱转","刘燊","肖婉婷","夏勉","林秀彬","宋明华","张辰炎","邓衍鹤","胡冬梅","王阿妹","叶宝娟","杨红玲","卢凤","张剑心","刘电芝","马洁","王建东","李文道","姚维佳","汪凤炎","李亚庆","游旭群","朱丹","范宁","董月晴","李晴","赵旭东","关荐","汝涛涛","陈庆伟","唐爽","江燕","侯雪珍","张晥","李文瑞","汪新建","吕小康","孙江洲","朱文静","李俞熹","陈小异","何李","张炀","张建勋","王晓蕾","周欣","林羽","林宛儒","魏碧芬","王英春","员东婷","韩红","伍海燕","柏子琳","任志洪","陶嵘","赖丽足","陈晓惠","石文典","宋有明","张永军","李放","谭瑾","麻芳菲","杨莉萍","刘甜芳","张斌","姜永志","王福兴","高苗苗","辛亮","刘兰馨","张珊珊","陈欣银","刘雁伶","陈水平","韦磐石","李慧如","郭增辉","刘田田","Robert J. Coplan","张云","孙晓军*","韩含","杨闰荣","胡欣灼","黄玲珊","杨勇勇","唐晓雨","韩胜杰","罗琴","陈安涛","李丹","刘萍","李燕","孙俊才","张力为","彭凡","蒋婷","宫慧娜","王爱君","雷江华","贾玲","冯欣蕊","周晓燕","付秋芳","吴洁","宋业臻","高志强","马皑","赵光","马雪","王晓龙","熊晓","郝爽","陈慧麟","林燕婷","昌维","陈云祥","赵洋","杨沈龙","李凯","陈丽华","艾炎","万明钢","周蔓","许秀芬","王鑫强","周云","焦璨","崔芳","熊静","姚唐","杨鹿野","田奕真","张涵","吴瑞林","张美萱","常若松","张野","蒋奖","龚先旻","彭彦琴","陈晨","季爽","李勇","赵冬梅","王亚婷","顾本柏","孟迎芳","齐星亮","黄杰","刘耀中","张林","黄顺航","曹旻","邓兆鑫","杨雅琳","江群","于洋","李清清","刘肖岑","丁芳","张雪","张文新","隋雪","董英","李藏","王阳","王亚丽","曹贤才","周珲","刘文","王益文","马焱","郑鸽","张烨","俞梦霞","魏威","刘嘉","张奋","邱江*","熊俊梅","林军凤","彭晓玲","齐森青","魏星","刘培朵","张晓琳","鲁中义","王大鹏","王彤彤","王华容","王敬群","郑思琦","肖珊","杨景","谢荣慧","王晓庆","何清华","王宇超","刘峰","陈睿","王玉洁","张瀚卿","李梅","李广政","黄颀","吴云","孙春晖","钟毅平","熊哲宏","蒋慧","赵改","张丽","程琛","陈海德","肖子伦","张丽芬","朱海雪","曾旻","高承海","伍新春","王琦君","向慧雯","张馨心","冯霞","王詠","伍麟","张倩","黄翯青","赵立","徐慰","何振宏","黄彬彬","牛盾","温忠粦","张素愚","康春花","刘旭","孙小坚","刘娜娜","蔡丹","向玲","郭文婷","何蔚祺","高旭亮","乌珊","代乐娇","柴晓运","韩尚锋","毕明华","聂衍刚","王燕","姜卉","辛晓雯","李新宇","周玲玲","黄希庭","邢锦涛","张晨艳","杨静","吴岩","胡林成","朱旭","陈亮","毕翠华","许艳凤","段文杰","付媛姝","王粟雅","索涛","林国耀","李鹏","霍梦","胡思源","李昳","王财玉","冯丹阳","何圆圆","尹述飞","刘方","方燕玉","李豪","杨伟星","杜峰","戴逸茹","张莉","陈宛月","刘红云","李天虹","胡卫平","李阳萍","王春燕","李筱梅","王瑞琪","李书慧","温芳芳","向松柏","谢丹丹","梁梓勤","李先春","汪大勋","苏双","姚良爽","高崚峰","任翰林","宋丽红","张奇","胡姗","王岚","方平","肖帅","刘雷","陈劲松","孟珠","刘影","王修欣","岳闪闪","李赛男","王小桃","葛列众","张明亮","石芮","卢剑","王丽","周宗奎","张英","高中华","陈子豪","厉飞飞","田志强","杨鹏飞","陈建林","林琳","王权红","谢慧","田雨馨","葛贤亮","蔺义芹","胡艺馨","谢晋艳","赵梦楚","汤丹丹","张露","刘斯漫","侯桂云","杜恒波","曹华","龚少英","叶萌","顾士伟","李敏","张卫","管健","张丹丹","郭本禹","杜杰","桂守才","姚东伟","夏天生","杨群","马红宇","丁凤琴","邓慧华","汪文义","左全顺","孙洵伟","杨玲","罗芬","张敏强","支焕","房佳琪","吴会云","司继伟","董杰","游雅媛","范伟","丁雅娜","郑雪","汪新光","孙琪","王斌强","刘舒畅","张玲","李家瑞","周忠英","雷玉菊","潘颖秋","牛更枫","曾平飞","王玉婷","董圣鸿","朱金强","童媛添","邓赐平","姜霁航","徐雪梅","刘亚*","陈志霞","李贺","窦东徽","莫雷","郑莹灿","黄福荣","张喆","刘凡","毕馨文","胡雪","邹建科","谢菊兰","叶婉敏","陈幼贞*","刘启珍","冯宇","韩雨婷","雷明","刘翔平","吴霞","袁文颖","王震","朱海燕","刘楚麒","陈俊","陈熙彤","郭海英","郑纯丽","朱晶晶","杨付","周美玲","蔡雨彤","陈秀珠","汪佳","王永跃","林文毅","李旻烨","涂冬波","童张梦子","郭磊","张明","","刘伟","宋诗情","梁明辉","易凌峰","孔繁昌","张曼","鲍振宙","刘欢欢","阴桐桐","徐富明","谭顶良","丁树良","戴步云","黎光明","方杰","詹沛达","夏礼胜","张莹","何顺超","蔡艳","牛玉柏","陆爱桃","冯成志","黄丹","胡竹菁","邵瑾","顾菲菲","杨娟*","樊富珉","朱文龙","鲁小华","周国富","聂爱情","许育光","张越","娄萍","金童林","郭晶晶","冯文锋","麻海芳","王碧莉","孙晓军","雍琳","颜学新","王琳","葛明贵","祝阳君","李富洪","鲁柯","郭永玉","王文超","李海","李亚丹","张璟","李永鑫","李海江","卢珊","郭娜娜","傅飞强","崔广伟","李庆庆","张鹏","陈宏玉","张斌梅子","陈宇帅","李玉华","刘建榕","吕晓蕾","杨丽娴","林丹华","张阔","连榕","方永超","李红","佐斌","闫国利","古典","彭晓哲","蔡雪斌","褚晓伟","陈影","Tang yiqi","杜秀芳","王丽娟","王心怡","王争艳","王美萍","张茜","周灵力","王云强","熊思雅","施利承","缪绿青","刘建平","游园园","吴翠萍","江京","刘光耀","纪林芹","潘斌","吴国榕","李其维","徐艳","陈斌斌","李维亚","赵维燕","钱啸云","李笑燃","陈永香","王立君","田雨","要梦霞","胡高喜","潘运娴","尹奎","孙龙","李清","邢璐","刘俊升","吕勇","刘金平","吴波","唐汉瑛","卢家楣","江光荣","王婷","李海峰","黄亮","连帅磊","宋志一","柴唤友","张璐","刘雍江","陆桂芝","李欣颐","王晓辰","高欣洁","王宝玺","刘鑫","位东涛","张庆林","陈万芬","王晓钧","邓欣媚","郭英慧","王大伟","徐婷","熊建华","王敬欣","宋乃庆","吴苑颖","宋友志","林小楠","李萍","曹衍淼","何晓丽","王玉正","王雷","符仲芳","王丽红","王春梅","陈明慧","孟维杰","李伟健","吕晓峰","周宵","岳阳","姜英杰","王一博","马林","王志伟","刘岩","陈有国","孙颖","苏红婷","刘宝根","陈梦雪","武晓","陈红","郭成","杨海波","李寿欣","李菲菲","陈小艺","朱莹莹","王笃明","朱千林","王春慧","王鲁晓","李岩梅","叶茂林","王凤娟","赵佳林","赵玉芳","杨栋","周丽","窦凯","邢晓沛","刘颜蓥","曹柠梦","李苗苗","刘敏","秦奎元","江艳平","张瑞颖","陈光辉","朱键军","孙昊","李文强","田媛","李瑛","张玥","林钰莹","彭坚"],"freq":[1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,1,2,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,1,1,1,2,2,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,2,2,1,1,1,1,2,3,1,1,1,1,1,1,1,1,1,2,1,1,5,1,2,1,2,1,1,1,1,1,4,1,1,1,1,1,2,1,1,1,2,1,1,2,1,1,1,1,1,3,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,1,3,2,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,3,1,1,1,2,3,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,3,1,1,1,1,1,1,3,1,1,1,2,1,1,1,1,1,3,1,1,3,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,1,1,1,1,4,2,1,2,1,1,2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,2,1,40,1,1,1,1,1,1,1,1,1,1,1,3,1,2,2,1,1,1,1,4,1,1,2,1,2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,1,2,1,1,1,1,2,3,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,2,2,1,1,1,1,1,3,1,1,1,4,1,2,1,1,2,1,1,1,1,1,1,2,1,1,1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,1,2,1,2,1,1,2,1,1,1,1,2,3,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,2],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":4.5,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<pre class="r"><code>#设置保存图像的目录
+setwd(&quot;D:/future_plan/Rcourse/psysin2018&quot;)
+
+#设置保存图像的名字，背景颜色，宽度和高度
+png(file=&quot;author.png&quot;, bg=&quot;white&quot;,width = 480, height = 480)</code></pre>
+</div>
+<div id="section-9" class="section level2">
+<h2>4.2 制作作者词云</h2>
+<pre class="r"><code>#读取作者
+institution1 = as.vector(unlist(institution_2018[2]))
+
+ #计算作者频率
+institution_freq &lt;- freq(institution1)
+
+#制作词云
+wordcloud2(institution_freq)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"word":[" <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+7F8E><U+56FD><U+5BBE><U+5915><U+6CD5><U+5C3C><U+4E9A><U+5927><U+5B66>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+56DB><U+5DDD><U+5E08><U+8303><U+5927><U+5B66>"," <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>","<U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+5B66><U+9662>"," <U+5E7F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+90E8><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+5E7F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5927><U+5B66><U+751F><U+5FC3><U+7406><U+5065><U+5EB7><U+6559><U+80B2><U+4E2D><U+5FC3>"," <U+6B66><U+6C49><U+4F53><U+80B2><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>","<U+4E2D><U+56FD><U+79D1><U+5B66><U+9662><U+5927><U+5B66>"," <U+6E56><U+5357><U+7B2C><U+4E00><U+5E08><U+8303><U+5B66><U+9662>. <U+6E56><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+6EC1><U+5DDE><U+5B66><U+9662>. <U+897F><U+5357><U+5927><U+5B66>","<U+5B89><U+5FBD><U+5927><U+5B66>"," <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+73B0><U+4EE3><U+6559><U+5B66><U+6280><U+672F><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>;<U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66>’. <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66>,<U+73B0><U+4EE3><U+6559><U+5B66><U+6280><U+672F><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>. <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+73B0><U+4EE3><U+6559><U+5B66><U+6280><U+672F><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>. <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66>;<U+73B0><U+4EE3><U+6559><U+5B66><U+6280><U+672F><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>"," <U+82CF><U+5DDE><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662><U+57FA><U+7840><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+82CF><U+5DDE><U+5927><U+5B66>"," <U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66>. <U+7518><U+8083><U+7701><U+5170><U+5DDE><U+5E02><U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66>. <U+7518><U+8083><U+7701><U+5170><U+5DDE><U+5E02><U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66>. . <U+4E50><U+5C71><U+5E08><U+8303><U+5B66><U+9662>"," <U+5317><U+4EAC><U+4F53><U+80B2><U+5927><U+5B66>. <U+5317><U+4EAC><U+4F53><U+80B2><U+5927><U+5B66><U+8FD0><U+52A8><U+5FC3><U+7406><U+6559><U+7814><U+5BA4>"," <U+66F2><U+961C><U+5E08><U+8303><U+5927><U+5B66>. <U+4E2D><U+79D1><U+9662><U+5FC3><U+7406><U+6240>"," . <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>"," <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+5B81><U+590F><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+5408><U+80A5><U+5E08><U+8303><U+5B66><U+9662><U+6559><U+5E08><U+6559><U+80B2><U+5B66><U+9662>"," <U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66>. <U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+56DB><U+5DDD><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>","<U+9996><U+90FD><U+7ECF><U+6D4E><U+8D38><U+6613><U+5927><U+5B66>"," <U+5CAD><U+5357><U+5E08><U+8303><U+5B66><U+9662>. <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+5357><U+5F00><U+5927><U+5B66>. <U+5357><U+5F00><U+5927><U+5B66><U+793E><U+4F1A><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+6C88><U+9633><U+5E08><U+8303><U+5927><U+5B66>. <U+5E7F><U+5DDE><U+5E02><U+65C5><U+6E38><U+5546><U+52A1><U+804C><U+4E1A><U+5B66><U+6821>"," <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+5357><U+4EAC><U+5E02><U+6C5F><U+5B81><U+533A><U+7B2C><U+4E8C><U+4EBA><U+6C11><U+533B><U+9662>. . Carleton University"," . <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66>. <U+5927><U+8FDE><U+5927><U+5B66>","<U+5170><U+5DDE><U+5927><U+5B66>"," <U+5317><U+4EAC><U+4F53><U+80B2><U+5927><U+5B66>. <U+5317><U+4EAC><U+4F53><U+80B2><U+5927><U+5B66><U+8FD0><U+52A8><U+5FC3><U+7406><U+5B66><U+6559><U+7814><U+5BA4>"," <U+6D59><U+6C5F><U+7406><U+5DE5><U+5927><U+5B66>. <U+4E2D><U+56FD><U+822A><U+5929><U+5458><U+79D1><U+7814><U+8BAD><U+7EC3><U+4E2D><U+5FC3>. <U+6D59><U+6C5F><U+5927><U+5B66><U+5FC3><U+7406><U+79D1><U+5B66><U+7814><U+7A76><U+4E2D><U+5FC3>"," <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+56DB><U+5DDD><U+5E08><U+8303><U+5927><U+5B66>. <U+7F8E><U+56FD><U+5BBE><U+5915><U+6CD5><U+5C3C><U+4E9A><U+5927><U+5B66>"," <U+6C5F><U+897F><U+79D1><U+6280><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+7701><U+4EBA><U+6C11><U+653F><U+5E9C><U+76F4><U+5C5E><U+673A><U+5173><U+4FDD><U+80B2><U+9662>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>","<U+56DB><U+5DDD><U+5E08><U+8303><U+5927><U+5B66>"," <U+897F><U+5357><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+90E8>. <U+6559><U+80B2><U+90E8>;<U+897F><U+5357><U+5927><U+5B66>"," <U+5B81><U+590F><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+5B81><U+590F><U+5927><U+5B66>. <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>"," <U+5357><U+5F00><U+5927><U+5B66><U+5468><U+6069><U+6765><U+653F><U+5E9C><U+7BA1><U+7406><U+5B66><U+9662><U+793E><U+4F1A><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+5357><U+5F00><U+5927><U+5B66>. <U+5357><U+5F00><U+5927><U+5B66><U+5468><U+6069><U+6765><U+653F><U+5E9C><U+7BA1><U+7406><U+5B66><U+9662>"," <U+4E2D><U+79D1><U+9662><U+5FC3><U+7406><U+7814><U+7A76><U+6240>. <U+4E2D><U+56FD><U+79D1><U+5B66><U+9662><U+5FC3><U+7406><U+7814><U+7A76><U+6240>"," <U+4E2D><U+5C71><U+5927><U+5B66>. <U+4E0A><U+6D77><U+5916><U+56FD><U+8BED><U+5927><U+5B66>. <U+4E2D><U+5C71><U+5927><U+5B66><U+5927><U+5B66>"," <U+54C8><U+5C14><U+6EE8><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662>. <U+54C8><U+5C14><U+6EE8><U+5E08><U+8303><U+5927><U+5B66>. <U+54C8><U+5C14><U+51B0><U+5E02><U+59D4><U+515A><U+6821>","<U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>"," <U+91B4><U+9675><U+5E02><U+7B2C><U+4E00><U+4E2D><U+5B66>. <U+6D59><U+6C5F><U+5E08><U+8303><U+5927><U+5B66>"," <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+5185><U+8499><U+53E4><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662>. <U+5185><U+8499><U+53E4><U+6C11><U+65CF><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662>. <U+6E56><U+5357><U+4E2D><U+533B><U+836F><U+5927><U+5B66><U+5E94><U+7528><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>","<U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66>"," <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. . <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+5B66><U+9662>"," <U+8D64><U+5CF0><U+5E02><U+5B89><U+5B9A><U+533B><U+9662>. <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66>"," <U+66A8><U+5357><U+5927><U+5B66>. <U+66A8><U+5357><U+5927><U+5B66><U+7BA1><U+7406><U+5B66><U+9662>"," <U+4E2D><U+592E><U+8D22><U+7ECF><U+5927><U+5B66>. <U+6E05><U+534E><U+5927><U+5B66>. <U+5E7F><U+5DDE><U+5927><U+5B66>","<U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5316><U+5DE5><U+5927><U+5B66>. <U+4E2D><U+56FD><U+4EBA><U+6C11><U+5927><U+5B66>. <U+4E2D><U+592E><U+8D22><U+7ECF><U+5927><U+5B66>"," <U+4E2D><U+592E><U+6C11><U+65CF><U+5927><U+5B66><U+7BA1><U+7406><U+5B66><U+9662>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66> <U+7ECF><U+6D4E><U+4E0E><U+5DE5><U+5546><U+7BA1><U+7406><U+5B66><U+9662>"," <U+8D63><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+6FB3><U+95E8><U+79D1><U+6280><U+5927><U+5B66>. <U+7F8E><U+56FD><U+5357><U+5361><U+7F57><U+6765><U+7EB3><U+5927><U+5B66>. <U+5B89><U+5FBD><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+73AF><U+5883><U+5DE5><U+7A0B><U+804C><U+4E1A><U+5B66><U+9662>"," <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+7814><U+7A76><U+9662>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66>. . <U+804A><U+57CE><U+5927><U+5B66>","<U+6D59><U+6C5F><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+79D1><U+5B66><U+7CFB>"," <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. . <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5927><U+5B66>. <U+6D59><U+6C5F><U+7406><U+5DE5><U+5927><U+5B66><U+5FC3><U+7406><U+7CFB>. <U+4E2D><U+56FD><U+822A><U+5929><U+5458><U+79D1><U+7814><U+8BAD><U+7EC3><U+4E2D><U+5FC3>. <U+6D59><U+6C5F><U+7406><U+5DE5><U+5927><U+5B66>"," <U+4E1C><U+5317><U+5E08><U+8303><U+5927><U+5B66>. <U+5B89><U+5E86><U+5E08><U+8303><U+5B66><U+9662>. "," <U+82CF><U+5DDE><U+5927><U+5B66>. <U+82CF><U+5DDE><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>. . <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66>. <U+82CF><U+5DDE><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>"," <U+9C81><U+4E1C><U+5927><U+5B66>. <U+9ED1><U+9F99><U+6C5F><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+53D1><U+5C55><U+5FC3><U+7406><U+7814><U+7A76><U+9662>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+5357><U+5F00><U+5927><U+5B66>. <U+5929><U+6D25><U+5546><U+4E1A><U+5927><U+5B66>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+7814><U+7A76><U+9662>"," <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+5317><U+4EAC><U+5E02><U+5B66><U+4E60><U+4E0E><U+8BA4><U+77E5><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>,<U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>"," <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+7814><U+7A76><U+9662>. <U+6559><U+80B2><U+90E8><U+4EBA><U+6587><U+793E><U+4F1A><U+79D1><U+5B66><U+91CD><U+70B9><U+7814><U+7A76><U+57FA><U+5730><U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+7814><U+7A76><U+9662>. "," <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+7F8E><U+56FD><U+5BBE><U+5915><U+6CD5><U+5C3C><U+4E9A><U+5927><U+5B66>"," <U+6D59><U+6C5F><U+7406><U+5DE5><U+5927><U+5B66>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>"," <U+6CB3><U+5357><U+5927><U+5B66>. . <U+5B81><U+6CE2><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+5317><U+4EAC><U+822A><U+7A7A><U+822A><U+5929><U+5927><U+5B66>. <U+5317><U+4EAC><U+5927><U+5B66>. <U+5317><U+4EAC><U+822A><U+7A7A><U+822A><U+5929><U+5927><U+5B66><U+7ECF><U+6D4E><U+7BA1><U+7406><U+5B66><U+9662>","<U+4E91><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+4E0E><U+7BA1><U+7406><U+5B66><U+9662>"," <U+676D><U+5DDE><U+5E08><U+8303><U+5927><U+5B66>. ","<U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>"," <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66>. <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662><U+5FC3><U+7406><U+7CFB>. <U+6D59><U+6C5F><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+79D1><U+5B66><U+7CFB>","<U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>"," <U+5317><U+4EAC><U+79D1><U+6280><U+5927><U+5B66>. <U+4E2D><U+56FD><U+4EBA><U+6C11><U+5927><U+5B66>"," <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>"," <U+897F><U+5357><U+5927><U+5B66>. <U+897F><U+5357><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>,<U+8BA4><U+77E5><U+4E0E><U+4EBA><U+683C><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>"," <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+5B81><U+6CE2><U+5927><U+5B66>. <U+4E2D><U+56FD><U+79D1><U+5B66><U+6280><U+672F><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5DE5><U+5546><U+5927><U+5B66>"," <U+4E2D><U+56FD><U+79D1><U+5B66><U+9662><U+5FC3><U+7406><U+7814><U+7A76><U+6240>. <U+4E2D><U+79D1><U+9662><U+5FC3><U+7406><U+6240>","<U+6DF1><U+5733><U+5927><U+5B66>"," <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+6DF1><U+5733><U+5143><U+5E73><U+7279><U+6B8A><U+6559><U+80B2><U+5B66><U+6821>"," <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662><U+5FC3><U+7406><U+7CFB>. <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66>. <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+798F><U+5DDE><U+798F><U+5EFA><U+5E08><U+5927><U+6559><U+80B2><U+5B66><U+9662>"," <U+897F><U+5357><U+5927><U+5B66>. <U+91CD><U+5E86><U+897F><U+5357><U+5927><U+5B66>"," <U+6D59><U+6C5F><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+5E08><U+6559><U+80B2><U+5B66><U+9662>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>,<U+6E56><U+5317><U+7701><U+4EBA><U+7684><U+53D1><U+5C55><U+4E0E><U+5FC3><U+7406><U+5065><U+5EB7><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+6D59><U+6C5F><U+5E08><U+8303><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5E08><U+8303><U+5927><U+5B66><U+676D><U+5DDE><U+5E7C><U+513F><U+5E08><U+8303><U+5B66><U+9662>"," <U+897F><U+5357><U+5927><U+5B66>. <U+897F><U+5357><U+8D22><U+7ECF><U+5927><U+5B66>"," <U+5174><U+4E49><U+6C11><U+65CF><U+5E08><U+8303><U+5B66><U+9662>. <U+5174><U+4EC1><U+53BF><U+6C11><U+65CF><U+4E2D><U+5B66>. <U+5174><U+4E49><U+5E02><U+9A6C><U+5CAD><U+9547><U+4E2D><U+5B66>"," <U+4E2D><U+56FD><U+653F><U+6CD5><U+5927><U+5B66><U+793E><U+4F1A><U+5B66><U+9662>. <U+4E2D><U+56FD><U+653F><U+6CD5><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5927><U+5B66>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+897F><U+5357><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+90E8>. <U+897F><U+5357><U+5927><U+5B66>. <U+897F><U+660C><U+5B66><U+9662><U+6559><U+5E08><U+6559><U+80B2><U+5B66><U+9662>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>","<U+5E7F><U+5DDE><U+5927><U+5B66>"," <U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66>. <U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+5B66><U+9662>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>"," <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+4E2D><U+79D1><U+9662><U+5FC3><U+7406><U+6240>","<U+53A6><U+95E8><U+5927><U+5B66>","<U+95FD><U+5357><U+5E08><U+8303><U+5927><U+5B66>"," <U+6D59><U+6C5F><U+7406><U+5DE5><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5927><U+5B66><U+5FC3><U+7406><U+79D1><U+5B66><U+7814><U+7A76><U+4E2D><U+5FC3>. <U+4E2D><U+56FD><U+822A><U+5929><U+5458><U+79D1><U+7814><U+8BAD><U+7EC3><U+4E2D><U+5FC3>"," <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66>. . <U+8FBD><U+5B81><U+79D1><U+6280><U+5927><U+5B66>","<U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>"," <U+9752><U+5C9B><U+9152><U+5E97><U+7BA1><U+7406><U+804C><U+4E1A><U+6280><U+672F><U+5B66><U+9662>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+6CF0><U+5DDE><U+5B66><U+9662>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+5B66><U+9662>"," <U+6C5F><U+82CF><U+5E08><U+8303><U+5927><U+5B66>. <U+4E1C><U+5317><U+5E08><U+8303><U+5927><U+5B66>","<U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66>"," <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>;<U+4E2D><U+56FD><U+79D1><U+5B66><U+9662>. <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>","<U+6B66><U+6C49><U+5927><U+5B66>"," <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+9075><U+4E49><U+5E08><U+8303><U+5B66><U+9662>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>","<U+897F><U+5357><U+5927><U+5B66>"," <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>"," <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+4E2D><U+592E><U+8D22><U+7ECF><U+5927><U+5B66><U+793E><U+4F1A><U+53D1><U+5C55><U+5B66><U+9662>","<U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+5317><U+5E08><U+5927><U+5B66><U+4E60><U+4E0E><U+8BA4><U+77E5><U+56FD><U+5BB6><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>"," <U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66>. . <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>"," <U+897F><U+5357><U+5927><U+5B66>. "," <U+91CD><U+5E86><U+5927><U+5B66>. <U+91CD><U+5E86><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662><U+66A8><U+5E94><U+7528><U+5FC3><U+7406><U+5B66><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>. <U+897F><U+5357><U+5927><U+5B66>"," <U+5B81><U+590F><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+5B81><U+590F><U+5927><U+5B66>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+9752><U+5C11><U+5E74><U+7F51><U+7EDC><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>","<U+5C71><U+4E1C><U+5DE5><U+5546><U+5B66><U+9662>"," <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+6559><U+80B2><U+4E2D><U+5FC3>"," <U+6CB3><U+5317><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>. <U+6CB3><U+5317><U+5927><U+5B66>. <U+6CB3><U+5317><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>"," <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+7814><U+7A76><U+9662>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+6B66><U+6C49><U+5E02><U+6B66><U+660C><U+73DE><U+55BB><U+8DEF><U+53F7>,<U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+9752><U+5C11><U+5E74><U+7F51><U+7EDC><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>(<U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>). <U+897F><U+5B89><U+4EA4><U+901A><U+5927><U+5B66><U+4EBA><U+6587><U+793E><U+4F1A><U+79D1><U+5B66><U+5B66><U+9662>"," <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+7701><U+975E><U+7269><U+8D28><U+6587><U+5316><U+9057><U+4EA7><U+7814><U+7A76><U+4FDD><U+62A4><U+4E2D><U+5FC3>"," <U+6DF1><U+5733><U+5927><U+5B66>. <U+6DF1><U+5733><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+793E><U+4F1A><U+5B66><U+9662>"," <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+5B66><U+9662>. "," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+53D1><U+5C55><U+5FC3><U+7406><U+7814><U+7A76><U+6240>. <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5DE5><U+4E1A><U+5927><U+5B66>. <U+6B66><U+6C49><U+5E02><U+6B66><U+660C><U+73DE><U+55BB><U+8DEF><U+53F7>,<U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+897F><U+5357><U+5927><U+5B66>. <U+4E1C><U+5317><U+5E08><U+8303><U+5927><U+5B66>"," <U+4E2D><U+5C71><U+5927><U+5B66>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+5E7F><U+4E1C><U+7701><U+5E7F><U+5DDE><U+5E02><U+77F3><U+724C><U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5927><U+5B66>"," <U+6C5F><U+82CF><U+7701><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+5927><U+6570><U+636E><U+91CD><U+70B9><U+5EFA><U+8BBE><U+5B9E><U+9A8C><U+5BA4>,<U+76D0><U+57CE><U+5E08><U+8303><U+5B66><U+9662>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+7814><U+7A76><U+9662>. <U+76D0><U+57CE><U+5E08><U+8303><U+5B66><U+9662>"," <U+6D59><U+6C5F><U+5DE5><U+5546><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5DE5><U+5546><U+5927><U+5B66><U+5DE5><U+5546><U+7BA1><U+7406><U+5B66><U+9662>"," <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+8FBD><U+5B81><U+5E08><U+8303><U+5927><U+5B66><U+8111><U+4E0E><U+8BA4><U+77E5><U+795E><U+7ECF><U+79D1><U+5B66><U+7814><U+7A76><U+4E2D><U+5FC3>. <U+6D4E><U+5B81><U+533B><U+5B66><U+9662><U+7CBE><U+795E><U+536B><U+751F><U+9662>","<U+82CF><U+5DDE><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662><U+5FC3><U+7406><U+5B66><U+7CFB>","<U+897F><U+5357><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+90E8>"," <U+82CF><U+5DDE><U+5927><U+5B66><U+5FC3><U+7406><U+7CFB>. <U+82CF><U+5DDE><U+5927><U+5B66>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>","<U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>"," <U+95FD><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+798F><U+5DDE><U+5927><U+5B66><U+5FC3><U+7406><U+4E0E><U+8BA4><U+77E5><U+79D1><U+5B66><U+7814><U+7A76><U+6240>. <U+5929><U+6D25><U+5E08><U+8303><U+5927><U+5B66>"," <U+5B89><U+5FBD><U+5E08><U+8303><U+5927><U+5B66>. <U+5B89><U+5FBD><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+79D1><U+9662>"," <U+6DF1><U+5733><U+5927><U+5B66>. <U+6DF1><U+5733><U+5927><U+5B66><U+4FE1><U+606F><U+5DE5><U+7A0B><U+5B66><U+9662>"," <U+4E1C><U+5357><U+5927><U+5B66><U+513F><U+7AE5><U+53D1><U+5C55><U+4E0E><U+5B66><U+4E60><U+79D1><U+5B66><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>. <U+4E1C><U+5357><U+5927><U+5B66>. <U+4E1C><U+5357><U+5927><U+5B66><U+5B66><U+4E60><U+79D1><U+5B66><U+7814><U+7A76><U+4E2D><U+5FC3>,<U+513F><U+7AE5><U+53D1><U+5C55><U+4E0E><U+5B66><U+4E60><U+79D1><U+5B66><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>"," <U+5E7F><U+4E1C><U+7701><U+5E7F><U+5DDE><U+5E02><U+5929><U+6CB3><U+533A><U+4E2D><U+5C71><U+5927><U+9053><U+897F><U+53F7><U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+77F3><U+724C><U+6821><U+533A><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+6C11><U+65CF><U+6559><U+80B2><U+4FE1><U+606F><U+5316><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>(<U+4E91><U+5357><U+5E08><U+8303><U+5927><U+5B66>). <U+4E91><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+4E0E><U+7BA1><U+7406><U+5B66><U+9662>. . <U+4E91><U+5357><U+5E08><U+8303><U+5927><U+5B66>"," <U+6E56><U+5317><U+5927><U+5B66>. . <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66><U+53D1><U+5C55><U+5FC3><U+7406><U+7814><U+7A76><U+6240>"," <U+66F2><U+961C><U+5E08><U+8303><U+5927><U+5B66>. <U+4E0A><U+6D77><U+5E08><U+8303><U+5927><U+5B66>"," <U+6E2D><U+5357><U+5E08><U+8303><U+5B66><U+9662>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>","<U+4E2D><U+56FD><U+79D1><U+5B66><U+9662><U+5FC3><U+7406><U+7814><U+7A76><U+6240>"," <U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66>. <U+9996><U+90FD><U+5E08><U+8303><U+5927><U+5B66><U+5B66><U+524D><U+6559><U+80B2><U+7CFB>. <U+4E2D><U+592E><U+8D22><U+7ECF><U+5927><U+5B66><U+793E><U+4F1A><U+53D1><U+5C55><U+5B66><U+9662><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+5E7F><U+5DDE><U+5927><U+5B66>. <U+5E7F><U+4E1C><U+8F7B><U+5DE5><U+804C><U+4E1A><U+6280><U+672F><U+5B66><U+9662>. <U+66A8><U+5357><U+5927><U+5B66>"," <U+6E56><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+6E56><U+5357><U+79D1><U+6280><U+804C><U+4E1A><U+5B66><U+9662>. <U+6E56><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662>. <U+4E2D><U+56FD><U+79D1><U+5B66><U+9662><U+5FC3><U+7406><U+7814><U+7A76><U+6240>"," <U+534E><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+5409><U+6797><U+519C><U+4E1A><U+5927><U+5B66>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+6C5F><U+897F><U+5E08><U+8303><U+5927><U+5B66>"," <U+6C5F><U+82CF><U+7B2C><U+4E8C><U+5E08><U+8303><U+5B66><U+9662>. <U+82CF><U+5DDE><U+5927><U+5B66>. <U+82CF><U+5DDE><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>","<U+5E7F><U+5DDE><U+5E02><U+5EB7><U+7EB3><U+5B66><U+6821>(<U+5E7F><U+5DDE><U+5B64><U+72EC><U+75C7><U+513F><U+7AE5><U+5EB7><U+590D><U+7814><U+7A76><U+4E2D><U+5FC3>)"," <U+6E05><U+534E><U+5927><U+5B66>. <U+6E05><U+534E><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+5317><U+4EAC><U+4EA4><U+901A><U+5927><U+5B66>. "," <U+6D59><U+6C5F><U+7406><U+5DE5><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+6D59><U+6C5F><U+5927><U+5B66>. <U+4EBA><U+56E0><U+5DE5><U+7A0B><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>. <U+6D59><U+6C5F><U+5927><U+5B66><U+5FC3><U+7406><U+79D1><U+5B66><U+7814><U+7A76><U+4E2D><U+5FC3>"," <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66>. <U+9655><U+897F><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+626C><U+5DDE><U+5927><U+5B66>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. University of Manchester. <U+5B89><U+5FBD><U+5E08><U+8303><U+5927><U+5B66>"," <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>. <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>"," <U+897F><U+5357><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+897F><U+5357><U+5927><U+5B66>. <U+897F><U+5357><U+5927><U+5B66><U+6821><U+533B><U+9662>"," <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+798F><U+5EFA><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>"," <U+5B81><U+6CE2><U+5927><U+5B66>. <U+6CB3><U+5357><U+5927><U+5B66>"," <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5FC3><U+7406><U+5B66><U+9662>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662><U+3001><U+5FC3><U+7406><U+5E94><U+7528><U+7814><U+7A76><U+4E2D><U+5FC3>"," <U+4FE1><U+9633><U+5E08><U+8303><U+5B66><U+9662><U+5FC3><U+7406><U+5B66><U+7CFB>. <U+5929><U+6D25><U+8D22><U+7ECF><U+5927><U+5B66>"," <U+6D59><U+6C5F><U+5E08><U+8303><U+5927><U+5B66>. <U+6D59><U+6C5F><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+52A1><U+5904>"," <U+5317><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>. ","<U+4E1C><U+5317><U+5E08><U+8303><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+90E8><U+5FC3><U+7406><U+5B66><U+9662>"," <U+6C5F><U+82CF><U+5357><U+901A><U+5927><U+5B66>. <U+5357><U+4EAC><U+5E08><U+8303><U+5927><U+5B66>","<U+82CF><U+5DDE><U+5927><U+5B66><U+5FC3><U+7406><U+7CFB>"," <U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66>. <U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+7518><U+8083><U+7701><U+897F><U+5317><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+897F><U+5317><U+5E08><U+5927><U+5FC3><U+7406><U+5B66><U+9662>. "," <U+590D><U+65E6><U+5927><U+5B66>. <U+590D><U+65E6><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+7CFB>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>;<U+65B0><U+7586><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>","<U+6CB3><U+5357><U+5927><U+5B66>"," <U+6D59><U+6C5F><U+5DE5><U+5546><U+5927><U+5B66>. <U+6D59><U+6C5F><U+4F20><U+5A92><U+5B66><U+9662>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>"," <U+5C71><U+897F><U+5927><U+5B66><U+6559><U+80B2><U+79D1><U+5B66><U+5B66><U+9662>. <U+5C71><U+897F><U+5927><U+5B66>"," <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>"," <U+534E><U+4E2D><U+79D1><U+6280><U+5927><U+5B66><U+516C><U+5171><U+7BA1><U+7406><U+5B66><U+9662>. <U+534E><U+4E2D><U+79D1><U+6280><U+5927><U+5B66>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+5C71><U+4E1C><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>","<U+6B66><U+6C49><U+5927><U+5B66><U+793E><U+4F1A><U+5B66><U+7CFB>"," <U+897F><U+5357><U+5927><U+5B66>. <U+897F><U+5357><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+90E8>. <U+5DDD><U+5317><U+533B><U+5B66><U+9662>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+4E2D><U+5357><U+6C11><U+65CF><U+5927><U+5B66><U+6559><U+80B2><U+5B66><U+9662>"," <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66>. <U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>. <U+9752><U+5C11><U+5E74><U+7F51><U+7EDC><U+5FC3><U+7406><U+4E0E><U+884C><U+4E3A><U+6559><U+80B2><U+90E8><U+91CD><U+70B9><U+5B9E><U+9A8C><U+5BA4>(<U+534E><U+4E2D><U+5E08><U+8303><U+5927><U+5B66><U+5FC3><U+7406><U+5B66><U+9662>). <U+897F><U+5B89><U+4EA4><U+901A><U+5927><U+5B66><U+4EBA><U+6587><U+793E><U+4F1A><U+79D1><U+5B66><U+5B66><U+9662>"," <U+5E7F><U+5DDE><U+5927><U+5B66>. <U+66A8><U+5357><U+5927> <U+5B66>. <U+5E7F><U+4E1C><U+8F7B><U+5DE5><U+804C><U+4E1A><U+6280><U+672F><U+5B66><U+9662>"," <U+54C8><U+5C14><U+6EE8><U+5E08><U+8303><U+5927><U+5B66>. "," <U+5E7F><U+4E1C><U+8D22><U+7ECF><U+5927><U+5B66>. <U+534E><U+5357><U+5E08><U+8303><U+5927><U+5B66>","<U+897F><U+5357><U+8D22><U+7ECF><U+5927><U+5B66>"," <U+897F><U+5357><U+5927><U+5B66>. <U+91CD><U+5E86><U+897F><U+5357><U+5927><U+5B66>. <U+91CD><U+5E86><U+5927><U+5B66>"],"freq":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,5,1,1,1,1,1,1,3,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,3,1,4,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":36,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<pre class="r"><code>#设置保存图像的目录
+setwd(&quot;D:/future_plan/Rcourse/psysin2018&quot;)
+
+#设置保存图像的名字，背景颜色，宽度和高度
+png(file=&quot;insititution.png&quot;, bg=&quot;white&quot;,width = 480, height = 480)</code></pre>
+</div>
+<div id="section-10" class="section level2">
+<h2>4.3制作关键词词云</h2>
+<pre class="r"><code>#按逗号分成不同的列
+split_kw&lt;-str_split(keyword_2018,&quot;,&quot;)
+
+#将去除逗号的list转成vector
+kw1 = as.vector(unlist(split_kw))
+
+#计算关键词频率
+kw_freq &lt;- freq(kw1) 
+
+#制作词云
+wordcloud2(kw_freq)</code></pre>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"word":[" 同伴接纳   "," 性别差异"," 线性潜增长模型"," 发展轨迹"," 集体取向价值观","  抑郁感   ","  社会能力","  学习成绩","  地域差异"," 文化心理学"," 本土心理学"," 人心"," 基因×环境   "," 焦虑障碍   ","关键词 ：强迫症患者"," 平行测验配对法   "," 平行测验法"," 区间估计","关键词 ：关键词：属性分类一致性信度","  多级评分的MCAT   ","  多级评分项目","关键词 ：心理契约违背"," 伦理型领导   ","关键词 ：小学儿童"," 趋近动机   "," 意志控制","关键词 ：远距离规则"," 元理论   ","关键词 ：过度自信","  行为测量"," 移动窗口","  冒犯","  自尊","关键词 ：自动响应","关键词 ：绿色消费"," 飞行模拟测验"," 现代新儒家   ","关键词 ：辱虐管理"," 协同教养   "," 动态系统","关键词 ：教养行为"," 属性层级结构   "," 发展速率   "," 风险知觉"," 初始水平"," 分层线性模型","关键词 ：序贯监测程序","关键词 ：宽恕"," 金钱刺激"," 元情绪"," 加工效能"," 词汇识别   "," 词素","关键词 ：儿童"," 学步儿   "," 婚姻质量"," 母亲控制行为","  可达阵"," 应对方式   ","关键词 ：抽象词"," 心理复原力"," 学优生和学业不良生","关键词 ：事件性前瞻记忆","关键词 ：推理判断","  动态评估","关键词 ：情绪 延迟折扣 情绪信息理论 情绪动机维度理论 评估倾向理论   "," 交互作用","  消极情绪"," 前扣带回"," 时间知觉","关键词 ：气质努力控制"," 测谎   "," 表象   "," 正效价事件   ","关键词 ：最简群体范式 社会分类 操作 自我锚定 主我分享   "," 认知过程   "," 视空能力","关键词 ：问卷数据","  记忆   "," 记忆","关键词 ：社会性情绪"," 上下级关系"," 视觉情绪设计"," 知觉"," 生活满意度","关键词 ：人际神经同步","  拓展Q矩阵理论"," 认知能力"," 谱聚类"," 具体词"," ρ=.50"," Bootstrap法"," 感觉运动信息   "," called item expected attribute matched rate (EAMR)"," 中介作用   "," 社会关系模型","  贝叶斯法"," 企业社会责任"," 相互共情"," 心灵鸡汤   "," and the distribution of attributes. Firstly"," 眼动技术   ","关键词 ：医患关系","  自闭症","关键词 ：道德决策","  潜结构方程模型","关键词 ：有调节的中介效应","关键词 ：自我客体化"," 多策略认知诊断"," 本土文化   "," 自尊"," 亲子关系"," 诚信"," 双重加工","   题组模型"," .40) and U(.25"," ICC指标","关键词 ：室内照度"," 形成机制"," 交叉滞后研究   ",".25). Medium-level and low-level item parameters were randomly drawn from uniform distributions U(.05","关键词 ：发展性计算障碍"," 题库安全性"," medium"," high"," 纵向研究","关键词 ：认知诊断"," 数据挖掘","关键词 ：手机支付"," 中介效应"," attribute discrimination index (ADI)"," and the prior distribution of attribute patterns in cognitive diagnostic assessment. Several studies focused on the design of Q-matrix and showed that items required only one attribute are important for classification. There are some works provided two basic set of item discrimination index to measure discriminatory power of an item. The first one is based on descriptive measures from classical test theory"," item parameters"," 集体主义","  再认提取"," 颜色"," 拟合指数   "," 吸烟利弊权衡"," 影响因素   "," 公共物品游戏","关键词 ：合作行为"," 镜像神经系统"," 数字线估计"," 心理理论"," 空间认知","  Wald检验"," 类别学习","  神经机制   ","关键词 ：数字表征"," 心理韧性"," .45). Next","关键词 ：表象","关键词 ：授权型领导"," 应激反应程度"," 外侧前额叶"," 信任危机"," ERP","关键词 ：包容性领导","关键词 ：个人取向价值观"," 自我决定感"," 守信   "," 心理过程","关键词 ：网络心理咨询","关键词 ：青少年抑郁","关键词 ：大学生","  危险类型"," 微生态群际隔离 "," 发展研究","  知觉压力","关键词 ：CD-CAT","关键词 ：危险知觉"," 时间折扣/ 时间贴现","关键词 ：不道德行为"," 依恋","  社会交换   ","关键词 ：跨期选择"," 个体差异"," 工作倦怠   ","关键词 ：情绪共情"," 过度投入","关键词 ：友好意图 敌对意图 材料生态性 性别 社会认知   ","  快感缺失   ","同伴拒绝"," 神经标记   "," 潜变量增长模型   ","关键词 ：资源","关键词 ：戒烟"," 情绪劳动"," 常识问题"," 功能磁共振成像"," 手语词"," 路径分析法   "," 影响机制   "," 社会经济地位"," 结构和测量","   模型选择   "," 双人游戏"," 积极自我呈现   "," 词汇迫选   ","  可通达性   "," 情绪智力   ","关键词 ：风险偏好"," 两步选题法   "," 目标显著性"," 顿悟"," “双刃剑”效应"," 奖赏预期   "," 创造力自我效能感"," 认知情绪调节策略","  认知加工方式"," 事件相关电位   "," 状态焦虑"," 产品环境怀疑"," 群体行为   "," 支付痛感"," 观点采择   "," 分配公平性判断   "," 医患信任"," DRM范式   ","关键词 ：厌恶情绪","关键词 ：职场负面八卦"," 情境"," 词汇增益效应","关键词 ：海洛因戒断者"," 指拼位置"," 负效价事件"," 航空安全"," 清洗","  抑郁   ","关键词 ：网络社会排斥","关键词 ：手近效应 注意 具身认知 视触双通道神经元 视觉通路   "," 促进效应"," 强化","关键词 ：判断预测"," 共情动机","关键词 ：视觉搜索","关键词 ：注意促进效应","关键词 ：年龄","关键词 ：亲组织非伦理行为（UPB）"," 社会网络关系"," 情绪调节"," 时间赋义效应   ","关键词 ：GKT范式"," 前瞻干扰效应   "," an attribute-specific item discrimination index"," 压力性生活事件","关键词 ：抑郁症 社会反馈 体验 期待 情绪调节   ","关键词 ：吸烟者"," 大学生"," 多分属性"," 任务绩效"," CWS"," 执行功能   ","  优势","  心境","  简化模型   "," 人际信任"," 任务框架"," 程序信息","关键词 ：领导认同","关键词 ：关键词：认知诊断","关键词 ：危机决策"," 趋势阻尼"," 公共空间   ","  混合互动   "," a heuristic method was presented using EAMR for test construction.The first simulation study was conducted to evaluate the performance of EAMR under the deterministic input noisy “and” gate (DINA) model. Several factors were manipulated for five independent attributes in this study. Four levels of correlation between latent attributes"," 创造力   "," 青少年"," 生存加工优势"," 情绪加工   "," 人格特质"," 睡眠问题 "," and the second index is based on information measures from item response theory"," 群际关系"," 自我决定动机   "," 认知功能","  bootstrap"," 认知神经科学   "," 运动员   "," 包容"," including cognitive diagnosis index (CDI)"," 干预   "," 本质公平"," ERP   "," 决策者角色","  正念"," 双向关系   "," 观察 "," 数量比较"," 过程分离范式","关键词 ：社会排斥"," 词语解码","关键词 ：心理应激","  LMX"," 整合模型   "," 学业成绩"," 回想"," 亲友认同"," 随机效应   "," 过程干扰"," 眼动研究   "," 运动技能获得   "," 韦伯系数","  情绪Stroop任务","关键词 ：人工智能"," 影像遗传学"," 反馈寻求行为"," 自我加工"," 能力估计精度   "," 儿童"," 心理症状","关键词 ：知识型员工","关键词 ：依恋表征"," 自我参照加工","关键词 ：物质成瘾 反转学习 冲动性 强迫性   "," 拓展的层级一致性指标   "," FN400"," 应聘者数量   "," 正性情绪事件"," 反馈类型"," 找不同"," 认知诊断模型","关键词 ：词切分","关键词 ：雾霾"," 个人拟合指标","关键词 ：具身认知/数能力/数表征/概念隐喻   "," 父母依恋","关键词 ：定向遗忘效应"," 道德自我概念   "," 发展级联   ","  共同体认同   ","关键词 ：管理者可信行为 员工-领导价值一致性 感知凝聚力 同事消极约束 员工建设性建言   ","关键词 ：流动儿童"," ρ=.00"," 动态性"," 熟悉性   ","关键词 ：情境意识","关键词 ：计划能力□持续性注意□抑制控制□选择性注意□交叉滞后   ","关键词 ：评分者漂移","关键词 ：彝族，家支，内群体认同，幸福感   "," 延迟反馈","关键词 ：青少年早期"," 等级反应多水平评分者漂移模型"," 工具主义"," 温度隐喻"," 空间判断"," 虚假记忆"," 相关电位","关键词 ：黑白隐喻"," 项目选择"," 戒烟意向"," 跨文化差异"," 多级计分"," 测验安全","  年轻驾驶员"," 调节作用","关键词 ：无关言语效应"," 行为倾向   "," 量表","关键词 ：调节聚焦"," 测量模型"," 视频游戏"," 近似数量系统"," 小学生"," 现实情境问题   "," 儿童   "," 认知神经机制   ","  互动博弈   "," 信度"," 效度   ","  眼动   "," 英语成就测验"," 心理弹性","  证词自信度","关键词 ：创伤暴露程度"," 心理账户"," 社会信号   ","关键词 ：语法复杂性"," 调节作用   ","交叉滞后分析   "," 青少年   "," PTSD"," 同伴依恋"," 知觉广度","关键词 ：合作 竞争 神经机制 生物基础 精神障碍人群   ","关键词 ：创伤后应激障碍（PTSD）","同伴侵害","关键词 ：道德动机"," 视线突显   "," 声音诱发闪光错觉","  情感-认知反馈假说"," 隐喻稳定性","关键词 ：人机交互","关键词 ：视频游戏"," 时间尺度"," 负性情绪"," 多元性   "," 戒烟计划   "," 物质滥用   "," 遗传效应"," ρ=.75"," 关联再认"," 运动速度"," 频率"," 文化框架转换   ","  先验信息   ","  自我损耗   ","关键词 ：群体相对剥夺"," such as the global item discrimination index","  领导者组织化身   "," GDP增长率","  驾驶经验"," 中文句子阅读","关键词 ：语义联系","关键词 ：忧 乐 忧乐圆融 儒家   "," 串级加工","关键词 ：安全依恋 启动 社会行为 迁移   "," 符号与非符号数量转换   ","关键词 ：一级视角转换"," 曲线   "," 三维厌恶结构"," 情绪学习"," 女大学生   ","关键词 ：小学二年级"," 相似性   "," 限制性饮食"," N400   "," modified CDI and ADI. Results showed a strong relationship between these indices and the average correct classi?cation rates of attributes. But their relationship to the indices may change as a function of the distribution of attributes.There lacks an item quality index as a measure of item’s correct classification rates of attributes. The purpose of this study was to propose an item discrimination index as a measure of correct classification rate of attributes based on Q-matrix"," 碰撞时间估计   ","关键词 ：五蕴"," “过犹不及”效应   "," 词素语义"," 非空间返回抑制效应"," 社会支持","关键词 ：公正世界信念"," 价值观"," 多策略RRUM模型","关键词 ：负性情绪"," 任务重要性","关键词 ：关键词  项目反应理论"," 空间工作记忆","关键词 ：儿童版特里尔社会应激测试"," 层级一致性指标"," 抑郁"," 言语工作记忆"," 未来取向"," 知觉的组织政治氛围"," 戒烟意愿","关键词 ：小学生"," 老化"," 药物相关线索"," DINA模型   "," 内隐记忆","  非言语互动"," 形状   "," 团体效果   ","   题组反应理论"," 双人工语法   "," 外显记忆   ","  言语互动"," 亲子沟通   "," 注意特征","关键词 ：关键词：群体共情","关键词 ：道德"," 社会决策"," 动态发展","关键词 ：被试操作任务  SPT效应  项目特异性信息  项目关联性信息   "," 广泛性焦虑障碍"," 公平认知"," 创造性"," 诚实","  社会决策"," 视空工作记忆","  会谈效果","关键词 ：功能性近红外光谱技术","  社会脑"," 刻板印象","  心理理论"," 抑制控制","关键词 ：青少年价值观","  听觉情绪设计"," 组织公正感   ","关键词 ：学前儿童 害羞 社会适应 师幼关系   ","  心理健康服务体系"," 编码方式"," 行为"," 目标探测任务"," 择偶偏好   ","关键词 ：父母受教育水平"," 情绪启动"," 概念隐喻","关键词 ：生命性效应"," was introduced. Secondly"," 人际困扰","关键词 ：物质主义"," 创造力"," 人际互动"," 心理安全感","关键词 ：情绪注意偏向"," 类别效应"," 信任"," Q矩阵"," 真实记忆"," 影响因素","关键词 ：认知诊断模型"," 受蕴"," 海明距离","关键词 ：情感","  情绪","关键词 ：自我表露 社交网站 友谊质量 生活满意度 扩展性社交倾向 青少年   "," LPC   "," 1000 items were simulated with the q-vector randomly selected from all possible attribute patterns measuring at least one attribute. Results showed that the new index performed well in that their values matched closely with the simulated correct classification rates of attributes across different simulation conditions.The second simulation study was conducted to examinee the effectiveness of the heuristic method for test construction. The test length was fixed to 50 and simulation conditions are similar as used in the first study. Results showed that the heuristic method based on the sum of EAMRs yielded comparable performance to the famous CDI.These indices can provide test developers with a useful tool to evaluate the quality of the diagnostic items. The attribute-specific item discrimination index will provide researchers and practitioners a way to select the most appropriate item and test that they want to measure with greater accuracy. It will be valuable to explore the applications and advantages of using the EAMR for developing item selection algorithm or termination rule in cognitive diagnostic computerized adaptive testing."," 领导效能"," 数学能力   "," 空间隐喻"," 学业价值"," 记忆   ","关键词 ：内隐序列学习"," 内化同性恋嫌恶"," 语义提取缺陷"," 教育效用"," 父母教养","关键词 ：儿童 "," 主观幸福感   "," NR3C1基因Bcl1多态性"," 结果信息   "," N-back任务   "," 返回抑制","关键词 ：电子游戏"," 职业发展"," were considered. Items were categorized into five groups according to the number of attributes measured by each item. Item discrimination power was set at three levels"," 序列趋势   "," 代际传递","关键词 ：工作满意度"," 幼儿"," 折扣率   "," 心理机制   ","  控制点","关键词 ：SNARC效应","关键词 ：抑郁症"," 情绪","  博弈论","关键词 ：冥想","  道德词","    收稿日期: 2017-08-18                    出版日期: 2018-01-20    "," CNV","关键词 ：自适应多分组测验"," 选题策略","  扩张算法"," 测验用时   "," 视野   ","关键词 ：非参数认知诊断"," 中介效应   "," K-means"," 神经网络模拟   "," 人工语法学习","关键词 ：GDINA"," 网络咨询师"," and low. High level meant relatively smaller guessing and slip parameters","  饱和模型"," 团体咨询"," 内隐学习","关键词 ：抑郁"," 生命史策略","  极性相关   "," 表观遗传","  乘积指标   ","  概念隐喻","关键词 ：声音词","  特质自控","关键词 ：正念","  调节作用   "," 亲社会行为","关键词 ：招聘决策"," 学校与社会适应   ","关键词 ：负性情境","关键词 ：社会变迁"," 属性平衡","  抑郁","关键词 ：文化差异","  脱离损伤假说","关键词 ：青少年"," 二级视角转换","关键词 ：范式主张","  心智主体"," 吸烟危害认识   "," 文化语意"," 理性精神"," 计算机化自适应测验"," 主体性   ","关键词 ：关键词  价值导向元记忆"," 情绪   "," 眼动追踪"," 监测与控制"," 熟悉"," 多巴胺系统"," and ρ=.95"," 阅读流畅性"," 学习时间分配   ","关键词 ：工作疏离感"," 对数-线性转换","关键词 ：情绪反馈"," 抑制困难"," 注意捕获   ","关键词 ：句法启动"," 句法启动的实质"," 情绪自动加工   ","关键词 ：学校正念干预 评估 非医疗健康干预 积极教育 学校社会工作   "," 时间进程   ","  自我控制资源"," 情绪性记忆"," 记忆存储器","关键词 ：当事人的投入"," 选择性注意"," 感恩","关键词 ：遮挡范式","关键词 ：青少年 心理弹性 自我概念 交叉滞后分析   "," 双加工理论   ","关键词 ：老年人"," 外化问题行为"," 家庭嘈杂度","关键词 ：结交越轨同伴","关键词 ：情绪表达矛盾"," 青少年 ","  工作绩效"," which were randomly generated from a uniform distribution U(.05","  因果关系","  社交焦虑","  交叉滞后模型   "," 阈下"," 群体愤怒","关键词 ：心理虐待","关键词 ：飞行员"," 民族本质论","关键词 ：社会经济地位"," 生存状况"," 启发式   "," 表现公平"," 建言","关键词 ：自我关注 负面评价恐惧 关系型自我构念 社交焦虑   "," 性别","关键词 ：权力","关键词 ：刺激质量"," 压力应对","关键词 ：非工作时间使用通信技术处理工作"," 同伴交往"," 认知评估"," 亲环境态度"," 公领域亲环境行为"," 调节效应","  组织认同","关键词 ：即时反馈","关键词 ：三重自我建构","  领导者-组织价值观匹配"," 无助反应模式"," 无现金社会   ","关键词 ：同事个性化契约","  工作退缩行为"," 领导正直"," 背景焦点","  心理契约违背","关键词 ：谣言传播","  谣言特征","  受众特征","  社会认知神经科学   "," 状态毅力","关键词 ：政策执行偏差严重程度"," 公众地方政府责任判断"," 认知负荷"," 民族认同"," 群际焦虑"," 交往态度   "," 偏差反应"," 转换功能"," 领导力   "," 冲突探查   ","关键词 ：负性情绪强度","关键词 ：被动性社交网站使用 冗思 核心自我评价 抑郁 青少年   ","关键词 ：社会阶层 集群行为意向 群体愤怒 集群行为方式   "," GDINA模型   "," 私领域亲环境行为   ","关键词 ：认知诊断评估","  Q矩阵标定方法   "," 属性层级"," G-DINA"," DINA   ","关键词 ：多层中介效应"," 学习效果   ","关键词 ：注意网络"," P300","  Monte Carlo法"," 时间距离   "," 信息完整性","  参数Bootstrap法"," 刷新能力","关键词 ：注意偏向训练"," 点探测任务   ","  佛教","  五蕴","  心智系统   ","关键词 ：关键词：归纳推理","关键词 ：恐惧管理理论"," 演绎推理"," 单过程理论"," 双过程理论   ","关键词 ：多通道"," 类别知觉   "," 规则","关键词 ：STEARC效应"," 言语编码"," 空间编码   ","关键词 ：趋近动机积极情绪","  因果推理   ","关键词 ：聋生"," 指拼形式   "," 机械臂"," 员工关系   "," IA模型"," 自适应","关键词 ：阅读理解能力"," 操作绩效   ","关键词 ：注意控制理论"," 情绪加工"," 点探测"," 元分析   ","关键词 ：内源性空间注意","关键词 ：藏汉双语 汉语阅读 功能连接 静息态   ","  学前儿童"," 词汇识别"," 科学发明"," 阅读"," 移动社交网络使用"," 回避动机消极情绪","关键词 ：双言"," 自我控制任务   ","抑郁"," 少数民族","关键词 ：时间知觉 疼痛表情 唤醒 注意   "," 奖惩分配公平性","关键词 ：情绪智力"," 分配公平性行为"," 神经基础"," 自我控制","关键词 ：儿童阅读"," 问题行为   ","关键词 ：【关键词】奖赏","关键词 ：多媒体学习"," 视线追踪"," 发散思维"," 眼动   "," 积极情绪"," 孤独感"," 固定效应"," 老化心理"," 社会建构   ","关键词 ：易变职业生涯定向 易变职业生涯 职业成功   ","关键词 ：同性恋"," 社会善念"," 生命意义感","Abstract：The existing studies suggested that item quality is closely relevant to the number of attributes required by an item"," 抑制功能"," 工作满意度   "," 伦理规范   ","关键词 ：上司地位知觉"," 下属默契"," 情感","关键词 ：群际接触","关键词 ：控制感剥夺","关键词 ：社会性发展迟滞","关键词 ：两水平被试内设计"," 依次检验法"," 应激反应"," 皮质醇","关键词 ：心理观","关键词 ：共情","关键词 ：付出-回报失衡"," 唾液α-淀粉酶"," 聚合思维"," 正念   "," 色蕴","关键词 ：证据顺序"," 想蕴","关键词 ：反应性攻击"," 行蕴"," 识蕴","关键词 ：空间—效价一致性效应","关键词 ：社会心理服务体系","关键词 ：关键词 中国特色心理学 提出问题 研究方法   "," 注意","  公共心理服务体系"," 合作行为","  社会心态","关键词 ：参考 情绪 事件相关电位 波幅 统计功效 伪迹剔除率   "," 刷新功能","关键词 ：顿悟，知识经验，注意竞争，注意失灵，层级加工系统   ","关键词 ：遥操作"," 警觉性"," 应对效能   ","关键词 ：积极反馈"," 社交网站体像比较"," 主观情绪   ","关键词 ：学业焦虑"," 程序公平认知"," 亲密同伴"," 高中生   ","关键词 ：关键词 社会经济地位 家庭阅读环境 电子媒介暴露 词汇理解    "," 农村小学校长   "," 个人反馈"," 过程反馈"," 工作满意度"," 驱动机制"," 掌握反应模式   "," 表征"," 利益相关者","关键词 ：责任型领导"," 职业倦怠"," 认知闭合需要","关键词 ：知识共享敌意"," 知识治理机制"," 应急救援团队   ","  外表拒绝敏感性","关键词 ：社会互动","  躯体变形障碍   "," 信息加工模型   ","  高自控者","  低自控者","  咨询效果   "," 运动方向","关键词 ：具身认知","  ERPs   "," 认知共情"," 颞中回   "," 情绪枯竭"," 自我概念清晰性","关键词 ：工作记忆"," 社会支持   "," 环保意识"," 视觉编码"," 网络集群攻击行为"," 群体效能"," 听觉主导效应"," 群体认同   "," 关系自我"," 集体自我"," IAT","  内隐积极联想   "," 表情识别"," 社会限制","关键词 ：居住流动性"," 跨文化研究"," 文化规范   ","关键词 ：多维项目反应理论"," 超扫描技术"," 脑间活动同步","  多维计算机化自适应测验"],"freq":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,2,1,1,1,1,1,1,1,3,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,5,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":36,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<pre class="r"><code>#设置保存图像的目录
+setwd(&quot;D:/future_plan/Rcourse/psysin2018&quot;)
+
+#设置保存图像的名字，背景颜色，宽度和高度
+png(file=&quot;kw.png&quot;, bg=&quot;white&quot;,width = 480, height = 480)</code></pre>
+</div>
+</div>
+<div id="section-11" class="section level1">
+<h1>5.写出中文数据</h1>
+<pre class="r"><code>#Sys.setlocale(,&quot;Chinese&quot;)
+#write.csv(institution_2018,&quot;D:/future_plan/Rcourse/psysin2018/institution1.csv&quot;)</code></pre>
+</div>
+
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="../../authors/admin/avatar_hu93e6d69870dd35e5b6ffc2002402aee9_183083_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="../../">彭顺 (Shun Peng)</a></h5>
+      <h6 class="card-subtitle">Doctoral Candidate in Psychology</h6>
+      <p class="card-text" itemprop="description">matter.</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="../../#contact" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+              <i class="ai ai-google-scholar"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/shun2017" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="../../js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="../../privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="../../terms/">Terms</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    Shun Peng 2019 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
