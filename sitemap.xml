@@ -58,12 +58,12 @@
   </url>
   
   <url>
-    <loc>/publication/preprint/</loc>
+    <loc>/authors/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/authors/</loc>
+    <loc>/publication/preprint/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url>
   
@@ -84,6 +84,11 @@
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/publication/internet-overuse/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url>
   
