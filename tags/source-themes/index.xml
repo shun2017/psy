@@ -5,7 +5,7 @@
     <link>/tags/source-themes/</link>
       <atom:link href="/tags/source-themes/index.xml" rel="self" type="application/rss+xml" />
     <description>Source Themes</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>Shun Peng 2019</copyright><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon-192.png</url>
       <title>Source Themes</title>
@@ -28,7 +28,7 @@
     </item>
     
     <item>
-      <title>An example journal article</title>
+      <title>The Relationship between Maternal Extraversion and Adolescent Extraversion：Mediating and Moderating Model</title>
       <link>/publication/journal-article/</link>
       <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
       <guid>/publication/journal-article/</guid>

@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Psychology &lt;- R and Python</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 01 Jun 2030 13:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>Shun Peng 2019</copyright><lastBuildDate>Sat, 01 Jun 2030 13:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon-192.png</url>
       <title>Psychology &lt;- R and Python</title>
@@ -102,6 +102,1110 @@
 &lt;/ul&gt;
 
 &lt;p&gt;Further talk details can easily be added to this page using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>元分析结构方程模型</title>
+      <link>/post/metasem/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/post/metasem/</guid>
+      <description>
+
+
+&lt;p&gt;本章介绍了元分析结构方程模型(Meta-analytic structural equation modeling) ，这是一种将元分析和结构方程模型(SEM)相结合的技术，用于综合相关矩阵或协方差矩阵，并在混合相关(协方差)矩阵上拟合结构方程模型。&lt;/p&gt;
+&lt;p&gt;在本文中将用两个例子来说明如何进行元分析的结构方程模型。使用metaSEM包中自带的数据。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(&amp;quot;metaSEM&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;section&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;&lt;strong&gt;1.验证性因素元分析&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;Digman(1997)对一个包含14项研究的五因素模型进行了二阶因子分析。他认为在五因素模型中有两个二阶因素:一致性A、尽责性C和情绪稳定性E的α因子，外向性E和智力I的β因子。我们使用TSSEM方法来测试所提出的模型。相关矩阵和样本大小分别存储在Digman97&lt;span class=&#34;math inline&#34;&gt;\(data和Digman97\)&lt;/span&gt;n中。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## 查看相关矩阵
+head(Digman97$data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $`Digman 1 (1994)`
+##        A     C   ES     E    I
+## A   1.00  0.62 0.41 -0.48 0.00
+## C   0.62  1.00 0.59 -0.10 0.35
+## ES  0.41  0.59 1.00  0.27 0.41
+## E  -0.48 -0.10 0.27  1.00 0.37
+## I   0.00  0.35 0.41  0.37 1.00
+## 
+## $`Digman 2 (1994)`
+##        A    C   ES     E     I
+## A   1.00 0.39 0.53 -0.30 -0.05
+## C   0.39 1.00 0.59  0.07  0.44
+## ES  0.53 0.59 1.00  0.09  0.22
+## E  -0.30 0.07 0.09  1.00  0.45
+## I  -0.05 0.44 0.22  0.45  1.00
+## 
+## $`Digman 3 (1963c)`
+##       A     C   ES     E    I
+## A  1.00  0.65 0.35  0.25 0.14
+## C  0.65  1.00 0.37 -0.10 0.33
+## ES 0.35  0.37 1.00  0.24 0.41
+## E  0.25 -0.10 0.24  1.00 0.41
+## I  0.14  0.33 0.41  0.41 1.00
+## 
+## $`Digman &amp;amp; Takemoto-Chock (1981b)`
+##        A     C   ES     E     I
+## A   1.00  0.65 0.70 -0.26 -0.03
+## C   0.65  1.00 0.71 -0.16  0.24
+## ES  0.70  0.71 1.00  0.01  0.11
+## E  -0.26 -0.16 0.01  1.00  0.66
+## I  -0.03  0.24 0.11  0.66  1.00
+## 
+## $`Graziano &amp;amp; Ward (1992)`
+##       A    C   ES    E    I
+## A  1.00 0.64 0.35 0.29 0.22
+## C  0.64 1.00 0.27 0.16 0.22
+## ES 0.35 0.27 1.00 0.32 0.36
+## E  0.29 0.16 0.32 1.00 0.53
+## I  0.22 0.22 0.36 0.53 1.00
+## 
+## $`Yik &amp;amp; Bond (1993)`
+##       A    C   ES    E    I
+## A  1.00 0.66 0.57 0.35 0.38
+## C  0.66 1.00 0.45 0.20 0.31
+## ES 0.57 0.45 1.00 0.49 0.31
+## E  0.35 0.20 0.49 1.00 0.59
+## I  0.38 0.31 0.31 0.59 1.00&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## 查看样本量
+head(Digman97$n)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 102 149 334 162  91 656&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;section-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1.1固定效应模型&lt;/h2&gt;
+&lt;div id=&#34;section-2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;strong&gt;1.1.1 固定效应模型:第一阶段分析&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;研究人员已经提出了几种MASEM的多变量方法，包括广义最小二乘（GLS）方法（Becker，1992; Becker＆Schram，1994）和两阶段结构方程模型（TSSEM）方法（Cheung，2002; Cheung＆Chan，2005）。由于两阶段结构方程模型的方法更为合理，在本文中，我们将介绍如何使用TSSEM来进行元分析结构方程模型。&lt;/p&gt;
+&lt;p&gt;在分析的第一阶段，使用tssem1()函数，通过在自变量中指定method=“FEM”，将与固定效应模型相关的矩阵池组合起来:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fixed1 &amp;lt;- tssem1(Digman97$data, Digman97$n, method = &amp;quot;FEM&amp;quot;)
+summary(fixed1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## tssem1FEM(Cov = Cov, n = n, cor.analysis = cor.analysis, model.name = model.name, 
+##     cluster = cluster, suppressWarnings = suppressWarnings, silent = silent, 
+##     run = run)
+## 
+## Coefficients:
+##        Estimate Std.Error z value  Pr(&amp;gt;|z|)    
+## S[1,2] 0.363278  0.013368 27.1761 &amp;lt; 2.2e-16 ***
+## S[1,3] 0.390375  0.012880 30.3078 &amp;lt; 2.2e-16 ***
+## S[1,4] 0.103572  0.015047  6.8830 5.861e-12 ***
+## S[1,5] 0.092286  0.015047  6.1331 8.620e-10 ***
+## S[2,3] 0.416070  0.012519 33.2346 &amp;lt; 2.2e-16 ***
+## S[2,4] 0.135148  0.014776  9.1464 &amp;lt; 2.2e-16 ***
+## S[2,5] 0.141431  0.014866  9.5135 &amp;lt; 2.2e-16 ***
+## S[3,4] 0.244459  0.014153 17.2724 &amp;lt; 2.2e-16 ***
+## S[3,5] 0.138339  0.014834  9.3260 &amp;lt; 2.2e-16 ***
+## S[4,5] 0.424566  0.012375 34.3071 &amp;lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                      Value
+## Sample size                      4496.0000
+## Chi-square of target model       1505.4443
+## DF of target model                130.0000
+## p value of target model             0.0000
+## Chi-square of independence model 4471.4242
+## DF of independence model          140.0000
+## RMSEA                               0.1815
+## RMSEA lower 95% CI                  0.1736
+## RMSEA upper 95% CI                  0.1901
+## SRMR                                0.1621
+## TLI                                 0.6580
+## CFI                                 0.6824
+## AIC                              1245.4443
+## BIC                               412.0217
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values may indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;第一阶段分析中检验相关矩阵同质性的拟合指标为&lt;span class=&#34;math inline&#34;&gt;\(χ2 (df = 130, N = 496) = 1505.4443, p = 0.0000, CFI = 0.6824, SRMR = 0.1621, RMSEA = 0.1815\)&lt;/span&gt;。这些值表明，假设相关矩阵是齐性的是不合理的。相反，更合适的做法是使用随机效应模型，稍后将对此进行说明。然而，为了说明固定效应模型，我们继续进行第二阶段的分析。&lt;/p&gt;
+&lt;p&gt;我们还可以通过以下命令提取模型运算之后的相关矩阵。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#查看结果中的相关矩阵
+coef(fixed1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##             A         C        ES         E          I
+## A  1.00000000 0.3632782 0.3903748 0.1035716 0.09228557
+## C  0.36327824 1.0000000 0.4160695 0.1351477 0.14143058
+## ES 0.39037483 0.4160695 1.0000000 0.2444593 0.13833895
+## E  0.10357155 0.1351477 0.2444593 1.0000000 0.42456626
+## I  0.09228557 0.1414306 0.1383390 0.4245663 1.00000000&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-3&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;strong&gt;1.1.2 固定效应模型：第二阶段分析&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;第二阶段分析的结构模型是通过网状动作模型(RAM)形成的 (McArdle and McDonald, 1984)。结构模型由三个矩阵指定。A和S分别用于指定非对称路径和对称方差协方差矩阵。A表示变量之间的回归系数、因子负荷等非对称路径，A中的ij表示变量j到变量i的回归系数。S是一个对称矩阵，表示变量的方差和协方差。它用于指定路径图中的双箭头。对角线元素表示变量的方差。如果变量是自变量，则S中对应的对角线表示方差;否则，S中对应的对角线表示因变量的残差。S中的非对角表示变量的协方差。F是一个选择矩阵，用于过滤观察到的变量。下面的语法指定了A矩阵:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## 因子负荷，其中5为一阶因子总个数，2为二阶因子个体，Alpha和Beta为二阶因子名称，0.3为固定负荷,rep(0,5)是用5个0占位
+Lambda1 &amp;lt;- matrix(c(&amp;quot;.3*Alpha_A&amp;quot;, &amp;quot;.3*Alpha_C&amp;quot;, &amp;quot;.3*Alpha_ES&amp;quot;, rep(0,5),&amp;quot;.3*Beta_E&amp;quot;, &amp;quot;.3*Beta_I&amp;quot;),ncol = 2, nrow = 5)
+
+#公因子只有一个的Lamda2,只需要1列，5行
+Lambda2 &amp;lt;- matrix(c(&amp;quot;.3*Alpha_A&amp;quot;, &amp;quot;.3*Alpha_C&amp;quot;, &amp;quot;.3*Alpha_ES&amp;quot;, &amp;quot;.3*Beta_E&amp;quot;, &amp;quot;.3*Beta_I&amp;quot;),ncol = 1, nrow = 5)
+
+head(Lambda1)#查看结构&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      [,1]          [,2]       
+## [1,] &amp;quot;.3*Alpha_A&amp;quot;  &amp;quot;0&amp;quot;        
+## [2,] &amp;quot;.3*Alpha_C&amp;quot;  &amp;quot;0&amp;quot;        
+## [3,] &amp;quot;.3*Alpha_ES&amp;quot; &amp;quot;0&amp;quot;        
+## [4,] &amp;quot;0&amp;quot;           &amp;quot;.3*Beta_E&amp;quot;
+## [5,] &amp;quot;0&amp;quot;           &amp;quot;.3*Beta_I&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## 用这种方法创建要容易得多，因为有很多0.其中5为一阶因子个数，7为一阶因子个数+二阶因子个数
+A1 &amp;lt;- rbind(cbind(matrix(0,ncol=5,nrow=5), Lambda1), matrix(0,ncol=7,nrow=2))
+
+#公因子只有一个的A2
+A2 &amp;lt;- rbind(cbind(matrix(0,ncol=5,nrow=5), Lambda2), matrix(0,ncol=6,nrow=1))
+
+##这一步非必需，但有助于检查A1的内容
+dimnames(A1) &amp;lt;- list(c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;, &amp;quot;Beta&amp;quot;),
+                     c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;, &amp;quot;Beta&amp;quot;))
+
+#公因子只有一个的命名
+dimnames(A2) &amp;lt;- list(c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;),c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;))
+
+A1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       A   C   ES  E   I   Alpha         Beta       
+## A     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Alpha_A&amp;quot;  &amp;quot;0&amp;quot;        
+## C     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Alpha_C&amp;quot;  &amp;quot;0&amp;quot;        
+## ES    &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Alpha_ES&amp;quot; &amp;quot;0&amp;quot;        
+## E     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot;           &amp;quot;.3*Beta_E&amp;quot;
+## I     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot;           &amp;quot;.3*Beta_I&amp;quot;
+## Alpha &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot;           &amp;quot;0&amp;quot;        
+## Beta  &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot;           &amp;quot;0&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;A2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       A   C   ES  E   I   Alpha        
+## A     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Alpha_A&amp;quot; 
+## C     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Alpha_C&amp;quot; 
+## ES    &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Alpha_ES&amp;quot;
+## E     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Beta_E&amp;quot;  
+## I     &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;.3*Beta_I&amp;quot;  
+## Alpha &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot; &amp;quot;0&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上面的输出显示了A1矩阵。Alpha_A是二阶因子α到一阶因子A的负荷，而“0.3”是初始值。当标签相同时，参数受到相同的约束。“0”的值表示这些因子负载固定在0。下面的语法指定了S矩阵:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##潜变量之间的协方差矩阵
+Phi1 &amp;lt;- matrix(c(1, &amp;quot;0.3*cor&amp;quot;, &amp;quot;0.3*cor&amp;quot;,1), ncol=2, nrow=2)
+
+#公囝子只有一个的Phi
+Phi2 &amp;lt;- matrix(c(1), ncol=1, nrow=1)
+
+##观察变量误差之间的误差方差,为S矩阵的对角线上的值
+Psi1 &amp;lt;- Diag(c(&amp;quot;.2*e1&amp;quot;, &amp;quot;.2*e2&amp;quot;, &amp;quot;.2*e3&amp;quot;, &amp;quot;.2*e4&amp;quot;, &amp;quot;.2*e5&amp;quot;))
+
+#公因子只有一个的Psi
+Psi2 &amp;lt;- Diag(c(&amp;quot;.2*e1&amp;quot;, &amp;quot;.2*e2&amp;quot;, &amp;quot;.2*e3&amp;quot;, &amp;quot;.2*e4&amp;quot;, &amp;quot;.2*e5&amp;quot;))
+
+##将它们组合起来创建S矩阵
+S1 &amp;lt;- bdiagMat(list(Psi1, Phi1))
+
+##将公因子只有一个的Phi,Psi组合起来
+S2 &amp;lt;- bdiagMat(list(Psi2, Phi2))
+
+##这个步骤不是必需的，但是对检查S1的内容很有帮助
+dimnames(S1) &amp;lt;- list(c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;, &amp;quot;Beta&amp;quot;),
+                     c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;, &amp;quot;Beta&amp;quot;))
+
+#公因子只有一个的S1命名
+dimnames(S2) &amp;lt;- list(c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;),c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;))
+
+S1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       A       C       ES      E       I       Alpha     Beta     
+## A     &amp;quot;.2*e1&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;       &amp;quot;0&amp;quot;      
+## C     &amp;quot;0&amp;quot;     &amp;quot;.2*e2&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;       &amp;quot;0&amp;quot;      
+## ES    &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;.2*e3&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;       &amp;quot;0&amp;quot;      
+## E     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;.2*e4&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;       &amp;quot;0&amp;quot;      
+## I     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;.2*e5&amp;quot; &amp;quot;0&amp;quot;       &amp;quot;0&amp;quot;      
+## Alpha &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;1&amp;quot;       &amp;quot;0.3*cor&amp;quot;
+## Beta  &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0.3*cor&amp;quot; &amp;quot;1&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;S2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       A       C       ES      E       I       Alpha
+## A     &amp;quot;.2*e1&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;  
+## C     &amp;quot;0&amp;quot;     &amp;quot;.2*e2&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;  
+## ES    &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;.2*e3&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;  
+## E     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;.2*e4&amp;quot; &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;  
+## I     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;.2*e5&amp;quot; &amp;quot;0&amp;quot;  
+## Alpha &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;0&amp;quot;     &amp;quot;1&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;下面的语法指定了F矩阵:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##前5个变量是显变量,而最后2个变量是潜变量。
+F1 &amp;lt;- create.Fmatrix(c(1, 1, 1, 1, 1, 0, 0), as.mxMatrix=FALSE)
+
+#公因子只有一个的F1
+F2 &amp;lt;- create.Fmatrix(c(1, 1, 1, 1, 1, 0), as.mxMatrix=FALSE)
+
+##这个步骤是不必要的，但有助于检查F1的内容
+dimnames(F1) &amp;lt;- list(c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;),c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;, &amp;quot;Beta&amp;quot;))
+
+#公因子只有一个的F1命名
+dimnames(F2) &amp;lt;- list(c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;),c(&amp;quot;A&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;E&amp;quot;, &amp;quot;I&amp;quot;, &amp;quot;Alpha&amp;quot;))
+
+F1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    A C ES E I Alpha Beta
+## A  1 0  0 0 0     0    0
+## C  0 1  0 0 0     0    0
+## ES 0 0  1 0 0     0    0
+## E  0 0  0 1 0     0    0
+## I  0 0  0 0 1     0    0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;F2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    A C ES E I Alpha
+## A  1 0  0 0 0     0
+## C  0 1  0 0 0     0
+## ES 0 0  1 0 0     0
+## E  0 0  0 1 0     0
+## I  0 0  0 0 1     0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后，我们可以通过tssem2()命令拟合结构模型:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fixed2 &amp;lt;- tssem2(fixed1, Amatrix=A1, Smatrix=S1, Fmatrix=F1,model.name=&amp;quot;Digman97 FEM&amp;quot;)
+
+fixed3 &amp;lt;- tssem2(fixed1, Amatrix=A2, Smatrix=S2, Fmatrix=F2,model.name=&amp;quot;Digman97 FEM2&amp;quot;)
+
+summary(fixed2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## wls(Cov = coef.tssem1FEM(tssem1.obj), aCov = vcov.tssem1FEM(tssem1.obj), 
+##     n = sum(tssem1.obj$n), Amatrix = Amatrix, Smatrix = Smatrix, 
+##     Fmatrix = Fmatrix, diag.constraints = diag.constraints, cor.analysis = tssem1.obj$cor.analysis, 
+##     intervals.type = intervals.type, mx.algebras = mx.algebras, 
+##     model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: z statistic approximation
+## Coefficients:
+##          Estimate Std.Error   lbound   ubound z value  Pr(&amp;gt;|z|)    
+## Alpha_A  0.562800  0.015380 0.532656 0.592944  36.593 &amp;lt; 2.2e-16 ***
+## Alpha_C  0.605217  0.015324 0.575183 0.635251  39.496 &amp;lt; 2.2e-16 ***
+## Beta_E   0.781413  0.034244 0.714297 0.848529  22.819 &amp;lt; 2.2e-16 ***
+## Alpha_ES 0.719201  0.015685 0.688458 0.749943  45.852 &amp;lt; 2.2e-16 ***
+## Beta_I   0.551374  0.026031 0.500355 0.602394  21.181 &amp;lt; 2.2e-16 ***
+## cor      0.362678  0.022384 0.318806 0.406549  16.203 &amp;lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                                Value
+## Sample size                                4496.0000
+## Chi-square of target model                   65.4526
+## DF of target model                            4.0000
+## p value of target model                       0.0000
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;    0.0000
+## DF manually adjusted                          0.0000
+## Chi-square of independence model           3112.8171
+## DF of independence model                     10.0000
+## RMSEA                                         0.0585
+## RMSEA lower 95% CI                            0.0465
+## RMSEA upper 95% CI                            0.0713
+## SRMR                                          0.0284
+## TLI                                           0.9505
+## CFI                                           0.9802
+## AIC                                          57.4526
+## BIC                                          31.8088
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(fixed3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## wls(Cov = coef.tssem1FEM(tssem1.obj), aCov = vcov.tssem1FEM(tssem1.obj), 
+##     n = sum(tssem1.obj$n), Amatrix = Amatrix, Smatrix = Smatrix, 
+##     Fmatrix = Fmatrix, diag.constraints = diag.constraints, cor.analysis = tssem1.obj$cor.analysis, 
+##     intervals.type = intervals.type, mx.algebras = mx.algebras, 
+##     model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: z statistic approximation
+## Coefficients:
+##          Estimate Std.Error   lbound   ubound z value  Pr(&amp;gt;|z|)    
+## Alpha_A  0.512309  0.014673 0.483550 0.541068  34.915 &amp;lt; 2.2e-16 ***
+## Alpha_C  0.566867  0.013995 0.539438 0.594297  40.506 &amp;lt; 2.2e-16 ***
+## Beta_E   0.575178  0.015376 0.545040 0.605315  37.407 &amp;lt; 2.2e-16 ***
+## Alpha_ES 0.666005  0.013339 0.639862 0.692149  49.930 &amp;lt; 2.2e-16 ***
+## Beta_I   0.499576  0.015710 0.468785 0.530366  31.800 &amp;lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                                Value
+## Sample size                                4496.0000
+## Chi-square of target model                  691.7957
+## DF of target model                            5.0000
+## p value of target model                       0.0000
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;    0.0000
+## DF manually adjusted                          0.0000
+## Chi-square of independence model           3112.8171
+## DF of independence model                     10.0000
+## RMSEA                                         0.1748
+## RMSEA lower 95% CI                            0.1639
+## RMSEA upper 95% CI                            0.1859
+## SRMR                                          0.1431
+## TLI                                           0.5573
+## CFI                                           0.7787
+## AIC                                         681.7957
+## BIC                                         649.7410
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;第二阶段结构模型上的拟合指数&lt;span class=&#34;math inline&#34;&gt;\(χ2 (df = 4, N = 4, 496) = 65.4526, p = 0.0000,CFI=0.9505, SRMR=0.0465, RMSEA=0.0585\)&lt;/span&gt;。虽然拟合优度指数看起来不错，但由于第一阶段分析中拟合优度指数较差，我们在解释时应该谨慎。&lt;/p&gt;
+&lt;p&gt;我们可以通过图形化显示模型来检查参数是否正确标记。这有助于我们检验理论模型是否与拟合模型相同。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##用来绘制模型的库
+library(&amp;quot;semPlot&amp;quot;)
+
+##将模型转换为stmodel对象,latNames:潜在变量的名称
+my.plot1 &amp;lt;- meta2semPlot(fixed2, latNames=c(&amp;quot;Alpha&amp;quot;,&amp;quot;Beta&amp;quot;))
+
+my.plot2 &amp;lt;- meta2semPlot(fixed3, latNames=&amp;quot;Alpha&amp;quot;)
+
+##用参数标签绘制模型
+semPaths(my.plot1, whatLabels=&amp;quot;path&amp;quot;, nCharEdges=10, nCharNodes=10,
+color=&amp;quot;yellow&amp;quot;, edge.label.cex=0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(my.plot2, whatLabels=&amp;quot;path&amp;quot;, nCharEdges=10, nCharNodes=10,
+color=&amp;quot;yellow&amp;quot;, edge.label.cex=0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-9-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##更重要的是，我们可以通过下面的命令绘制参数估计值
+semPaths(my.plot1, whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10, color=&amp;quot;green&amp;quot;,
+edge.label.cex=1.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-9-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(my.plot2, whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10, color=&amp;quot;green&amp;quot;,
+edge.label.cex=1.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-9-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-4&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1.2随机效应模型&lt;/h2&gt;
+&lt;div id=&#34;section-5&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1.2.1随机效应模型:第一阶段分析&lt;/h3&gt;
+&lt;p&gt;随机效应TSSEM即在tssem1()中指定method=“REM”。默认情况下（RE.type =“Symm”），使用随机效应中的正定义对称协方差矩阵。可以使用RE.type=“Diag”指定随机效应的对角矩阵。研究人员还可以指定RE.type=&#34; 0 &#34;。由于随机效应的方差分量为零，因此该模型成为固定效应模型。该模型等价于Becker(1992)提出的广义最小二乘方法。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;random1 &amp;lt;- tssem1(Digman97$data, Digman97$n, method=&amp;quot;REM&amp;quot;, RE.type=&amp;quot;Diag&amp;quot;)
+summary(random1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## meta(y = ES, v = acovR, RE.constraints = Diag(paste0(RE.startvalues, 
+##     &amp;quot;*Tau2_&amp;quot;, 1:no.es, &amp;quot;_&amp;quot;, 1:no.es)), RE.lbound = RE.lbound, 
+##     I2 = I2, model.name = model.name, suppressWarnings = TRUE, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: z statistic approximation
+## Coefficients:
+##                Estimate   Std.Error      lbound      ubound z value
+## Intercept1   0.38971905  0.05429256  0.28330759  0.49613051  7.1781
+## Intercept2   0.43265879  0.04145136  0.35141561  0.51390197 10.4377
+## Intercept3   0.04945630  0.06071080 -0.06953468  0.16844728  0.8146
+## Intercept4   0.09603707  0.04478712  0.00825593  0.18381821  2.1443
+## Intercept5   0.42724238  0.03911621  0.35057602  0.50390874 10.9224
+## Intercept6   0.11929317  0.04106204  0.03881305  0.19977328  2.9052
+## Intercept7   0.19292426  0.04757963  0.09966991  0.28617862  4.0548
+## Intercept8   0.22690163  0.03240893  0.16338129  0.29042197  7.0012
+## Intercept9   0.18105568  0.04258856  0.09758364  0.26452773  4.2513
+## Intercept10  0.43614968  0.03205960  0.37331401  0.49898535 13.6043
+## Tau2_1_1     0.03648372  0.01513055  0.00682839  0.06613904  2.4113
+## Tau2_2_2     0.01963098  0.00859789  0.00277942  0.03648254  2.2832
+## Tau2_3_3     0.04571438  0.01952285  0.00745030  0.08397847  2.3416
+## Tau2_4_4     0.02236122  0.00995084  0.00285794  0.04186450  2.2472
+## Tau2_5_5     0.01729073  0.00796404  0.00168149  0.03289996  2.1711
+## Tau2_6_6     0.01815482  0.00895896  0.00059557  0.03571407  2.0264
+## Tau2_7_7     0.02604883  0.01130266  0.00389602  0.04820164  2.3047
+## Tau2_8_8     0.00988761  0.00513713 -0.00018097  0.01995620  1.9247
+## Tau2_9_9     0.01988244  0.00895053  0.00233973  0.03742516  2.2214
+## Tau2_10_10   0.01049222  0.00501578  0.00066147  0.02032296  2.0918
+##              Pr(&amp;gt;|z|)    
+## Intercept1  7.068e-13 ***
+## Intercept2  &amp;lt; 2.2e-16 ***
+## Intercept3    0.41529    
+## Intercept4    0.03201 *  
+## Intercept5  &amp;lt; 2.2e-16 ***
+## Intercept6    0.00367 ** 
+## Intercept7  5.018e-05 ***
+## Intercept8  2.538e-12 ***
+## Intercept9  2.126e-05 ***
+## Intercept10 &amp;lt; 2.2e-16 ***
+## Tau2_1_1      0.01590 *  
+## Tau2_2_2      0.02242 *  
+## Tau2_3_3      0.01920 *  
+## Tau2_4_4      0.02463 *  
+## Tau2_5_5      0.02992 *  
+## Tau2_6_6      0.04272 *  
+## Tau2_7_7      0.02119 *  
+## Tau2_8_8      0.05426 .  
+## Tau2_9_9      0.02633 *  
+## Tau2_10_10    0.03645 *  
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Q statistic on the homogeneity of effect sizes: 1220.334
+## Degrees of freedom of the Q statistic: 130
+## P value of the Q statistic: 0
+## 
+## Heterogeneity indices (based on the estimated Tau2):
+##                               Estimate
+## Intercept1: I2 (Q statistic)    0.9326
+## Intercept2: I2 (Q statistic)    0.8872
+## Intercept3: I2 (Q statistic)    0.9325
+## Intercept4: I2 (Q statistic)    0.8703
+## Intercept5: I2 (Q statistic)    0.8797
+## Intercept6: I2 (Q statistic)    0.8480
+## Intercept7: I2 (Q statistic)    0.8887
+## Intercept8: I2 (Q statistic)    0.7669
+## Intercept9: I2 (Q statistic)    0.8590
+## Intercept10: I2 (Q statistic)   0.8193
+## 
+## Number of studies (or clusters): 14
+## Number of observed statistics: 140
+## Number of estimated parameters: 20
+## Degrees of freedom: 120
+## -2 log likelihood: -112.4196 
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values may indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I2表示相关系数的异质性。例如，上述分析表明，基于Q统计量的I2的变化范围为0.7669 ~ 0.9326，表明相关元素间存在高度异质性。在多元随机效应meta分析中，随机效应TSSEM通常基于固定效应均值向量的饱和模型和随机效应方差分量，因此不存在拟合优度指标。&lt;/p&gt;
+&lt;p&gt;如果要以矩阵形式提取估计的平均相关矩阵，可以使用以下命令:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##选择固定效果并将其转换为相关矩阵
+vec2symMat( coef(random1, select=&amp;quot;fixed&amp;quot;), diag=FALSE )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##            [,1]      [,2]      [,3]      [,4]       [,5]
+## [1,] 1.00000000 0.3897191 0.4326588 0.0494563 0.09603707
+## [2,] 0.38971905 1.0000000 0.4272424 0.1192932 0.19292426
+## [3,] 0.43265879 0.4272424 1.0000000 0.2269016 0.18105568
+## [4,] 0.04945630 0.1192932 0.2269016 1.0000000 0.43614968
+## [5,] 0.09603707 0.1929243 0.1810557 0.4361497 1.00000000&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-6&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1.2.2随机效应模型：第二阶段分析&lt;/h3&gt;
+&lt;p&gt;阶段2的分析跟固定效应的过程相似，通过tssem2()函数进行。此函数自动处理在阶段1分析中使用的是固定效果模型还是随机效果模型。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;random2 &amp;lt;- tssem2(random1, Amatrix=A1, Smatrix=S1, Fmatrix=F1)
+summary(random2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## wls(Cov = pooledS, aCov = aCov, n = tssem1.obj$total.n, Amatrix = Amatrix, 
+##     Smatrix = Smatrix, Fmatrix = Fmatrix, diag.constraints = diag.constraints, 
+##     cor.analysis = cor.analysis, intervals.type = intervals.type, 
+##     mx.algebras = mx.algebras, model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: z statistic approximation
+## Coefficients:
+##          Estimate Std.Error   lbound   ubound z value  Pr(&amp;gt;|z|)    
+## Alpha_A  0.569435  0.052425 0.466684 0.672187 10.8619 &amp;lt; 2.2e-16 ***
+## Alpha_C  0.590630  0.052649 0.487439 0.693821 11.2182 &amp;lt; 2.2e-16 ***
+## Beta_E   0.679955  0.075723 0.531541 0.828370  8.9795 &amp;lt; 2.2e-16 ***
+## Alpha_ES 0.760455  0.061963 0.639009 0.881901 12.2726 &amp;lt; 2.2e-16 ***
+## Beta_I   0.641842  0.072459 0.499825 0.783859  8.8580 &amp;lt; 2.2e-16 ***
+## cor      0.377691  0.047402 0.284785 0.470596  7.9679 1.554e-15 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                                Value
+## Sample size                                4496.0000
+## Chi-square of target model                    7.8204
+## DF of target model                            4.0000
+## p value of target model                       0.0984
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;    0.0000
+## DF manually adjusted                          0.0000
+## Chi-square of independence model            501.6765
+## DF of independence model                     10.0000
+## RMSEA                                         0.0146
+## RMSEA lower 95% CI                            0.0000
+## RMSEA upper 95% CI                            0.0297
+## SRMR                                          0.0436
+## TLI                                           0.9806
+## CFI                                           0.9922
+## AIC                                          -0.1796
+## BIC                                         -25.8234
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;random3 &amp;lt;- tssem2(random1, Amatrix=A2, Smatrix=S2, Fmatrix=F2)
+summary(random3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## wls(Cov = pooledS, aCov = aCov, n = tssem1.obj$total.n, Amatrix = Amatrix, 
+##     Smatrix = Smatrix, Fmatrix = Fmatrix, diag.constraints = diag.constraints, 
+##     cor.analysis = cor.analysis, intervals.type = intervals.type, 
+##     mx.algebras = mx.algebras, model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: z statistic approximation
+## Coefficients:
+##          Estimate Std.Error   lbound   ubound z value  Pr(&amp;gt;|z|)    
+## Alpha_A  0.513737  0.047999 0.419662 0.607813  10.703 &amp;lt; 2.2e-16 ***
+## Alpha_C  0.551676  0.044962 0.463552 0.639800  12.270 &amp;lt; 2.2e-16 ***
+## Beta_E   0.478533  0.040395 0.399360 0.557706  11.846 &amp;lt; 2.2e-16 ***
+## Alpha_ES 0.637111  0.044654 0.549590 0.724631  14.268 &amp;lt; 2.2e-16 ***
+## Beta_I   0.502138  0.045018 0.413904 0.590371  11.154 &amp;lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                                Value
+## Sample size                                4496.0000
+## Chi-square of target model                  101.7275
+## DF of target model                            5.0000
+## p value of target model                       0.0000
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;    0.0000
+## DF manually adjusted                          0.0000
+## Chi-square of independence model            501.6765
+## DF of independence model                     10.0000
+## RMSEA                                         0.0656
+## RMSEA lower 95% CI                            0.0548
+## RMSEA upper 95% CI                            0.0770
+## SRMR                                          0.1359
+## TLI                                           0.6065
+## CFI                                           0.8033
+## AIC                                          91.7275
+## BIC                                          59.6727
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;第二阶段结构模型上的健康指数&lt;span class=&#34;math inline&#34;&gt;\(χ2 (df = 4, N = 4, 496) = 7.8204, p = 0.0984,SRMR=0.0436, CFI=0.9922,TLI=0.9806 RMSEA=0.0146\)&lt;/span&gt;。这表明模型与数据非常吻合。α因子的因子负荷分别为0.5694、0.5906和0.6800，β因子的因子负荷分别为0.7605和0.6418。这两个因子的因子相关系数为0.3937。所有这些估计都具有统计学意义。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;绘制结构方程图&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##用来绘制模型的库
+library(&amp;quot;semPlot&amp;quot;)
+
+##将模型转换为stmodel对象,latNames:潜在变量的名称
+my.plot3 &amp;lt;- meta2semPlot(random2, latNames=c(&amp;quot;Alpha&amp;quot;,&amp;quot;Beta&amp;quot;))
+
+my.plot4 &amp;lt;- meta2semPlot(random3, latNames=&amp;quot;Alpha&amp;quot;)
+
+##用参数标签绘制模型
+semPaths(my.plot3, whatLabels=&amp;quot;path&amp;quot;, nCharEdges=10, nCharNodes=10,
+color=&amp;quot;yellow&amp;quot;, edge.label.cex=0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(my.plot4, whatLabels=&amp;quot;path&amp;quot;, nCharEdges=10, nCharNodes=10,
+color=&amp;quot;yellow&amp;quot;, edge.label.cex=0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-13-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##绘制参数估计值
+semPaths(my.plot3, whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10, color=&amp;quot;green&amp;quot;,
+edge.label.cex=1.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-13-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(my.plot4, whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10, color=&amp;quot;green&amp;quot;,
+edge.label.cex=1.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-13-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;meta&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2.meta路径分析&lt;/h1&gt;
+&lt;p&gt;这个数据集是来自于 Becker (2009)和Craft et al. (2003)的研究包括10个关于个人绩效(Per)、认知能力(Cog,)、躯体认知能力(SO)和自信心(SC)之间相关矩阵。因变量是个人绩效(Per)，而其他变量要么是自变量，要么是中介变量。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(Becker09$data)#相关矩阵池&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $`1`
+##                 Performance Cognitive Somatic Self_confidence
+## Performance            1.00     -0.55   -0.48            0.66
+## Cognitive             -0.55      1.00    0.47           -0.38
+## Somatic               -0.48      0.47    1.00           -0.46
+## Self_confidence        0.66     -0.38   -0.46            1.00
+## 
+## $`3`
+##                 Performance Cognitive Somatic Self_confidence
+## Performance            1.00      0.53   -0.12            0.03
+## Cognitive              0.53      1.00    0.52           -0.48
+## Somatic               -0.12      0.52    1.00           -0.40
+## Self_confidence        0.03     -0.48   -0.40            1.00
+## 
+## $`6`
+##                 Performance Cognitive Somatic Self_confidence
+## Performance            1.00      0.44    0.46              NA
+## Cognitive              0.44      1.00    0.67              NA
+## Somatic                0.46      0.67    1.00              NA
+## Self_confidence          NA        NA      NA              NA
+## 
+## $`10`
+##                 Performance Cognitive Somatic Self_confidence
+## Performance            1.00     -0.39   -0.17            0.19
+## Cognitive             -0.39      1.00    0.21           -0.54
+## Somatic               -0.17      0.21    1.00           -0.43
+## Self_confidence        0.19     -0.54   -0.43            1.00
+## 
+## $`17`
+##                 Performance Cognitive Somatic Self_confidence
+## Performance            1.00       0.1    0.31           -0.17
+## Cognitive              0.10       1.0      NA              NA
+## Somatic                0.31        NA      NA              NA
+## Self_confidence       -0.17        NA      NA              NA
+## 
+## $`22`
+##                 Performance Cognitive Somatic Self_confidence
+## Performance            1.00      0.23    0.08            0.51
+## Cognitive              0.23      1.00    0.45           -0.29
+## Somatic                0.08      0.45    1.00           -0.44
+## Self_confidence        0.51     -0.29   -0.44            1.00&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(Becker09$n)#每个研究的被试数&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 142  37  16  14  45 100&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;section-7&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;2.1固定效应模型&lt;/h2&gt;
+&lt;div id=&#34;section-8&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.1.1固定效应模型：第一阶段&lt;/h3&gt;
+&lt;p&gt;与验证性因素元分析一样，能过设定method=“FEM”来进行第一阶段的分析：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##第一阶段分析
+fixed1 &amp;lt;- tssem1(Becker09$data, Becker09$n, method=&amp;quot;FEM&amp;quot;)
+summary(fixed1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## tssem1FEM(Cov = Cov, n = n, cor.analysis = cor.analysis, model.name = model.name, 
+##     cluster = cluster, suppressWarnings = suppressWarnings, silent = silent, 
+##     run = run)
+## 
+## Coefficients:
+##         Estimate Std.Error  z value  Pr(&amp;gt;|z|)    
+## S[1,2] -0.067649  0.041996  -1.6109 0.1072101    
+## S[1,3] -0.157168  0.040966  -3.8365 0.0001248 ***
+## S[1,4]  0.369860  0.037133   9.9605 &amp;lt; 2.2e-16 ***
+## S[2,3]  0.526319  0.029981  17.5551 &amp;lt; 2.2e-16 ***
+## S[2,4] -0.413867  0.034900 -11.8588 &amp;lt; 2.2e-16 ***
+## S[3,4] -0.416681  0.034772 -11.9833 &amp;lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                     Value
+## Sample size                      633.0000
+## Chi-square of target model       212.2591
+## DF of target model                46.0000
+## p value of target model            0.0000
+## Chi-square of independence model 638.4062
+## DF of independence model          52.0000
+## RMSEA                              0.2391
+## RMSEA lower 95% CI                 0.2086
+## RMSEA upper 95% CI                 0.2741
+## SRMR                               0.2048
+## TLI                                0.6795
+## CFI                                0.7165
+## AIC                              120.2591
+## BIC                              -84.4626
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values may indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;拟合指数显示，测试相关矩阵的同质性在第一阶段分析&lt;span class=&#34;math inline&#34;&gt;\(χ2 (df = 46,N = 633) = 212.2591, p = 0.0000, CFI = 0.7165, RMSEA = 0.2391, SRMR = 0.2086\)&lt;/span&gt;。这些值表明，假设相关矩阵是不齐性的。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-9&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.1.2固定效应模型：第二阶段&lt;/h3&gt;
+&lt;p&gt;由以上结果可知，该数据首选还是通过随机效应模型进行研究，但是，为了进一步说明固定效应模型，我们继续使用此数据进行分析。。由于模型中有“中介”，因此必须指定参数diag.constraints=TRUE。由于参数diag.constraints=TRUE的规范中没有SE，我们可以通过指定interval .type=“LB”来请求LBCI。&lt;/p&gt;
+&lt;p&gt;首先，定义A, S矩阵：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##回归系数矩阵结构，即模型结构矩阵，其中cog2per代表cog到per有路径，其它意思相同，0表示没有路径
+A1 &amp;lt;- create.mxMatrix(c(0, &amp;quot;0.1*Cog2Per&amp;quot;, &amp;quot;0.1*SO2Per&amp;quot;, &amp;quot;0.1*SC2Per&amp;quot;,
+                        0, 0, 0, 0,
+                        0, 0, 0, 0,
+                        0, &amp;quot;0.1*Cog2SC&amp;quot;, &amp;quot;0.1*SO2SC&amp;quot;,0),
+                      type=&amp;quot;Full&amp;quot;, byrow=TRUE, ncol=4, nrow=4,
+                      as.mxMatrix=FALSE)
+
+##这个步骤不是必需的，但是对于检查模型是有用的
+dimnames(A1)[[1]] &amp;lt;- dimnames(A1)[[2]] &amp;lt;- c(&amp;quot;Per&amp;quot;,&amp;quot;Cog&amp;quot;,&amp;quot;SO&amp;quot;,&amp;quot;SC&amp;quot;)
+
+##变量之间的协方差矩阵
+S1 &amp;lt;- create.mxMatrix(c(&amp;quot;0.1*var_Per&amp;quot;,
+                        0, 1,
+                        0, &amp;quot;0.1*cor&amp;quot;, 1,
+                        0, 0, 0, &amp;quot;0.1*var_SC&amp;quot;),
+                        byrow=TRUE, type=&amp;quot;Symm&amp;quot;, as.mxMatrix=FALSE)
+
+##这个步骤不是必需的，但是对于检查模型是有用的
+dimnames(S1)[[1]] &amp;lt;- dimnames(S1)[[2]] &amp;lt;- c(&amp;quot;Per&amp;quot;,&amp;quot;Cog&amp;quot;,&amp;quot;SO&amp;quot;,&amp;quot;SC&amp;quot;)
+
+##第二阶段分析
+fixed2 &amp;lt;- tssem2(fixed1, Amatrix=A1, Smatrix=S1, diag.constraints=TRUE,
+                 intervals.type=&amp;quot;LB&amp;quot;)
+summary(fixed2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## wls(Cov = coef.tssem1FEM(tssem1.obj), aCov = vcov.tssem1FEM(tssem1.obj), 
+##     n = sum(tssem1.obj$n), Amatrix = Amatrix, Smatrix = Smatrix, 
+##     Fmatrix = Fmatrix, diag.constraints = diag.constraints, cor.analysis = tssem1.obj$cor.analysis, 
+##     intervals.type = intervals.type, mx.algebras = mx.algebras, 
+##     model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: Likelihood-based statistic
+## Coefficients:
+##          Estimate Std.Error    lbound    ubound z value Pr(&amp;gt;|z|)
+## Cog2Per  0.128077        NA  0.032434  0.224633      NA       NA
+## SC2Per   0.398474        NA  0.314932  0.482859      NA       NA
+## SO2Per  -0.058540        NA -0.153196  0.036211      NA       NA
+## Cog2SC  -0.269105        NA -0.353349 -0.185481      NA       NA
+## SO2SC   -0.275046        NA -0.359140 -0.191483      NA       NA
+## var_Per  0.852084        NA  0.791401  0.902516      NA       NA
+## var_SC   0.774020        NA  0.709439  0.830946      NA       NA
+## cor      0.526319        NA  0.467558  0.585081      NA       NA
+## 
+## Goodness-of-fit indices:
+##                                             Value
+## Sample size                                633.00
+## Chi-square of target model                   0.00
+## DF of target model                           0.00
+## p value of target model                      0.00
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;   2.00
+## DF manually adjusted                         0.00
+## Chi-square of independence model           530.32
+## DF of independence model                     6.00
+## RMSEA                                        0.00
+## RMSEA lower 95% CI                           0.00
+## RMSEA upper 95% CI                           0.00
+## SRMR                                         0.00
+## TLI                                          -Inf
+## CFI                                          1.00
+## AIC                                          0.00
+## BIC                                          0.00
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上述分析表明，相关矩阵是异构的，因此，需要搞清楚这种异构的原因，需要进行亚组分析。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-10&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.1.3固定效应模型:亚组分析第一阶段&lt;/h3&gt;
+&lt;p&gt;如果研究相关矩阵变得同质，分组变量可以用来解释这种异质性的原因。首先，查看亚组(需研究者自行定义)，然后，使用cluster=来指定要分析的亚组。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##显示研究的类型
+Becker09$Type_of_sport&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;Individual&amp;quot; &amp;quot;Individual&amp;quot; &amp;quot;Team&amp;quot;       &amp;quot;Individual&amp;quot; &amp;quot;Individual&amp;quot;
+##  [6] &amp;quot;Individual&amp;quot; &amp;quot;Team&amp;quot;       &amp;quot;Team&amp;quot;       &amp;quot;Team&amp;quot;       &amp;quot;Individual&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##不同研究类型是否会造成差异
+cluster1 &amp;lt;- tssem1(Becker09$data, Becker09$n, method=&amp;quot;FEM&amp;quot;,
+                   cluster=Becker09$Type_of_sport)
+summary(cluster1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $Individual
+## 
+## Call:
+## tssem1FEM(Cov = data.cluster[[i]], n = n.cluster[[i]], cor.analysis = cor.analysis, 
+##     model.name = model.name, suppressWarnings = suppressWarnings)
+## 
+## Coefficients:
+##         Estimate Std.Error  z value  Pr(&amp;gt;|z|)    
+## S[1,2] -0.126875  0.055611  -2.2815   0.02252 *  
+## S[1,3] -0.211441  0.054081  -3.9097 9.241e-05 ***
+## S[1,4]  0.487390  0.043680  11.1583 &amp;lt; 2.2e-16 ***
+## S[2,3]  0.473040  0.043307  10.9230 &amp;lt; 2.2e-16 ***
+## S[2,4] -0.386483  0.047228  -8.1833 2.220e-16 ***
+## S[3,4] -0.466696  0.043510 -10.7262 &amp;lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                     Value
+## Sample size                      368.0000
+## Chi-square of target model       136.6832
+## DF of target model                25.0000
+## p value of target model            0.0000
+## Chi-square of independence model 402.8658
+## DF of independence model          31.0000
+## RMSEA                              0.2703
+## RMSEA lower 95% CI                 0.2284
+## RMSEA upper 95% CI                 0.3176
+## SRMR                               0.2234
+## TLI                                0.6276
+## CFI                                0.6997
+## AIC                               86.6832
+## BIC                              -11.0189
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values may indicate problems.)
+## 
+## $Team
+## 
+## Call:
+## tssem1FEM(Cov = data.cluster[[i]], n = n.cluster[[i]], cor.analysis = cor.analysis, 
+##     model.name = model.name, suppressWarnings = suppressWarnings)
+## 
+## Coefficients:
+##          Estimate  Std.Error z value  Pr(&amp;gt;|z|)    
+## S[1,2]  0.0051421  0.0632738  0.0813 0.9352297    
+## S[1,3] -0.0868765  0.0622957 -1.3946 0.1631419    
+## S[1,4]  0.2087475  0.0609202  3.4266 0.0006112 ***
+## S[2,3]  0.5850250  0.0404768 14.4533 &amp;lt; 2.2e-16 ***
+## S[2,4] -0.4454112  0.0514597 -8.6555 &amp;lt; 2.2e-16 ***
+## S[3,4] -0.3464400  0.0561304 -6.1721 6.741e-10 ***
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Goodness-of-fit indices:
+##                                     Value
+## Sample size                      265.0000
+## Chi-square of target model        50.7961
+## DF of target model                15.0000
+## p value of target model            0.0000
+## Chi-square of independence model 235.5404
+## DF of independence model          21.0000
+## RMSEA                              0.1902
+## RMSEA lower 95% CI                 0.1350
+## RMSEA upper 95% CI                 0.2504
+## SRMR                               0.1536
+## TLI                                0.7664
+## CFI                                0.8331
+## AIC                               20.7961
+## BIC                              -32.8999
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values may indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;LR统计量和拟合优度表明相关矩阵仍然是异构的，通过变一亚组进行分析并没有用。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-11&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.1.4固定效应模型:亚组分析第二阶段&lt;/h3&gt;
+&lt;p&gt;作为一个例子，我们仍然展示了如何进行第二阶段的分析，虽然我们不打算解释结果,因为第一阶段的分析表明，没有必要进行下一步分析。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cluster2 &amp;lt;- tssem2(cluster1, Amatrix=A1, Smatrix=S1, diag.constraints=TRUE,
+                   intervals.type=&amp;quot;LB&amp;quot;)
+
+summary(cluster2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $Individual
+## 
+## Call:
+## wls(Cov = coef.tssem1FEM(tssem1.obj), aCov = vcov.tssem1FEM(tssem1.obj), 
+##     n = sum(tssem1.obj$n), Amatrix = Amatrix, Smatrix = Smatrix, 
+##     Fmatrix = Fmatrix, diag.constraints = diag.constraints, cor.analysis = tssem1.obj$cor.analysis, 
+##     intervals.type = intervals.type, mx.algebras = mx.algebras, 
+##     model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: Likelihood-based statistic
+## Coefficients:
+##           Estimate Std.Error     lbound     ubound z value Pr(&amp;gt;|z|)
+## Cog2Per  0.0748833        NA -0.0428986  0.1937988      NA       NA
+## SC2Per   0.5128147        NA  0.4109856  0.6167938      NA       NA
+## SO2Per  -0.0075349        NA -0.1285838  0.1141126      NA       NA
+## Cog2SC  -0.2134881        NA -0.3199655 -0.1075417      NA       NA
+## SO2SC   -0.3657078        NA -0.4687658 -0.2635122      NA       NA
+## var_Per  0.7579668        NA  0.6668707  0.8346076      NA       NA
+## var_SC   0.7468161        NA  0.6587892  0.8225276      NA       NA
+## cor      0.4730400        NA  0.3881604  0.5579199      NA       NA
+## 
+## Goodness-of-fit indices:
+##                                             Value
+## Sample size                                368.00
+## Chi-square of target model                   0.00
+## DF of target model                           0.00
+## p value of target model                      0.00
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;   2.00
+## DF manually adjusted                         0.00
+## Chi-square of independence model           343.74
+## DF of independence model                     6.00
+## RMSEA                                        0.00
+## RMSEA lower 95% CI                           0.00
+## RMSEA upper 95% CI                           0.00
+## SRMR                                         0.00
+## TLI                                          -Inf
+## CFI                                          1.00
+## AIC                                          0.00
+## BIC                                          0.00
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)
+## 
+## $Team
+## 
+## Call:
+## wls(Cov = coef.tssem1FEM(tssem1.obj), aCov = vcov.tssem1FEM(tssem1.obj), 
+##     n = sum(tssem1.obj$n), Amatrix = Amatrix, Smatrix = Smatrix, 
+##     Fmatrix = Fmatrix, diag.constraints = diag.constraints, cor.analysis = tssem1.obj$cor.analysis, 
+##     intervals.type = intervals.type, mx.algebras = mx.algebras, 
+##     model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: Likelihood-based statistic
+## Coefficients:
+##           Estimate Std.Error     lbound     ubound z value Pr(&amp;gt;|z|)
+## Cog2Per  0.1781450        NA  0.0202237  0.3391795      NA       NA
+## SC2Per   0.2521560        NA  0.1175514  0.3880278      NA       NA
+## SO2Per  -0.1037389        NA -0.2533333  0.0451972      NA       NA
+## Cog2SC  -0.3690411        NA -0.5040432 -0.2366887      NA       NA
+## SO2SC   -0.1305417        NA -0.2697379  0.0075562      NA       NA
+## var_Per  0.9374346        NA  0.8645122  0.9828723      NA       NA
+## var_SC   0.7904001        NA  0.6899118  0.8717703      NA       NA
+## cor      0.5850250        NA  0.5056921  0.6643578      NA       NA
+## 
+## Goodness-of-fit indices:
+##                                            Value
+## Sample size                                265.0
+## Chi-square of target model                   0.0
+## DF of target model                           0.0
+## p value of target model                      0.0
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;   2.0
+## DF manually adjusted                         0.0
+## Chi-square of independence model           291.4
+## DF of independence model                     6.0
+## RMSEA                                        0.0
+## RMSEA lower 95% CI                           0.0
+## RMSEA upper 95% CI                           0.0
+## SRMR                                         0.0
+## TLI                                         -Inf
+## CFI                                          1.0
+## AIC                                          0.0
+## BIC                                          0.0
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;画出结构图&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##将模型转换为带有2个图的semPlotModel对象
+my.plots &amp;lt;- lapply(X=cluster2, FUN=meta2semPlot,manNames=c(&amp;quot;Per&amp;quot;,&amp;quot;Cog&amp;quot;,&amp;quot;SO&amp;quot;,&amp;quot;SC&amp;quot;) )
+
+##设置两个图
+layout(t(1:2))
+
+
+##如果标签重叠，我们可以使用layout =“spring”来修改它
+semPaths(my.plots[[1]], whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10,color=&amp;quot;orange&amp;quot;, layout=&amp;quot;circle2&amp;quot;, edge.label.cex=0.8)
+
+title(&amp;quot;Individual sport&amp;quot;)
+
+semPaths(my.plots[[2]], whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10,color=&amp;quot;skyblue&amp;quot;, layout=&amp;quot;circle2&amp;quot;, edge.label.cex=0.8)
+
+title(&amp;quot;Team sport&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-12&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;2.2随机效应模型&lt;/h2&gt;
+&lt;div id=&#34;section-13&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.2.1随机效应模型：第一阶段&lt;/h3&gt;
+&lt;p&gt;由于数据不足，我们通过指定RE.type =“Diag”限制了方差矩阵的结构。 &lt;span class=&#34;math inline&#34;&gt;\(I2\)&lt;/span&gt;的相关系数不同于0.0000至0.8521。随机效应模型比固定效应模型更适合此数据组。TSSEM随机效应以下语法：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## First stage analysis
+random1 &amp;lt;- tssem1(Becker09$data, Becker09$n, method=&amp;quot;REM&amp;quot;, RE.type=&amp;quot;Diag&amp;quot;)
+
+summary(random1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## meta(y = ES, v = acovR, RE.constraints = Diag(paste0(RE.startvalues, 
+##     &amp;quot;*Tau2_&amp;quot;, 1:no.es, &amp;quot;_&amp;quot;, 1:no.es)), RE.lbound = RE.lbound, 
+##     I2 = I2, model.name = model.name, suppressWarnings = TRUE, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: z statistic approximation
+## Coefficients:
+##               Estimate   Std.Error      lbound      ubound z value
+## Intercept1 -4.4862e-02  1.0865e-01 -2.5781e-01  1.6808e-01 -0.4129
+## Intercept2 -1.3404e-01  7.8022e-02 -2.8696e-01  1.8884e-02 -1.7179
+## Intercept3  2.9919e-01  7.9986e-02  1.4242e-01  4.5596e-01  3.7405
+## Intercept4  5.2311e-01  3.2705e-02  4.5901e-01  5.8721e-01 15.9947
+## Intercept5 -4.1544e-01  4.5544e-02 -5.0470e-01 -3.2617e-01 -9.1217
+## Intercept6 -4.1817e-01  4.5764e-02 -5.0786e-01 -3.2847e-01 -9.1375
+## Tau2_1_1    9.4922e-02  5.1078e-02 -5.1897e-03  1.9503e-01  1.8584
+## Tau2_2_2    3.3531e-02  2.3734e-02 -1.2988e-02  8.0049e-02  1.4127
+## Tau2_3_3    3.4663e-02  2.2792e-02 -1.0009e-02  7.9334e-02  1.5208
+## Tau2_4_4    1.5086e-10  6.7323e-03 -1.3195e-02  1.3195e-02  0.0000
+## Tau2_5_5    4.9552e-03  7.4239e-03 -9.5953e-03  1.9506e-02  0.6675
+## Tau2_6_6    4.9722e-03  6.7071e-03 -8.1734e-03  1.8118e-02  0.7413
+##             Pr(&amp;gt;|z|)    
+## Intercept1 0.6796682    
+## Intercept2 0.0858102 .  
+## Intercept3 0.0001837 ***
+## Intercept4 &amp;lt; 2.2e-16 ***
+## Intercept5 &amp;lt; 2.2e-16 ***
+## Intercept6 &amp;lt; 2.2e-16 ***
+## Tau2_1_1   0.0631176 .  
+## Tau2_2_2   0.1577304    
+## Tau2_3_3   0.1283075    
+## Tau2_4_4   1.0000000    
+## Tau2_5_5   0.5044738    
+## Tau2_6_6   0.4584884    
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+## 
+## Q statistic on the homogeneity of effect sizes: 173.4801
+## Degrees of freedom of the Q statistic: 46
+## P value of the Q statistic: 1.110223e-16
+## 
+## Heterogeneity indices (based on the estimated Tau2):
+##                              Estimate
+## Intercept1: I2 (Q statistic)   0.8521
+## Intercept2: I2 (Q statistic)   0.6752
+## Intercept3: I2 (Q statistic)   0.7195
+## Intercept4: I2 (Q statistic)   0.0000
+## Intercept5: I2 (Q statistic)   0.2874
+## Intercept6: I2 (Q statistic)   0.2876
+## 
+## Number of studies (or clusters): 10
+## Number of observed statistics: 52
+## Number of estimated parameters: 12
+## Degrees of freedom: 40
+## -2 log likelihood: -30.48963 
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values may indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;由于模型是饱和模型，因此LR统计量为0且自由度df为0。当有中介变量时，我们也可能需要估计间接效应。通过mx.algebras函数，我们可以计算单独的间接效应和总的间接效应。也可以获得关于这些值的LBCI。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-14&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.2.2随机效应模型：第二阶段&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## 第二阶段分析，其中，cog2sc表示cog到sc的路径系数，而Cog2SC*SC2Per表示cog通过sc到per的间接效应
+random2 &amp;lt;- tssem2(random1, Amatrix=A1, Smatrix=S1, diag.constraints=TRUE,
+                  intervals.type=&amp;quot;LB&amp;quot;, model.name=&amp;quot;TSSEM2 Becker09&amp;quot;,
+                  mx.algebras=list( Cog=mxAlgebra(Cog2SC*SC2Per, name=&amp;quot;Cog&amp;quot;),
+                                    SO=mxAlgebra(SO2SC*SC2Per, name=&amp;quot;SO&amp;quot;),
+                                    Cog_SO=mxAlgebra(Cog2SC*SC2Per+SO2SC*SC2Per,name=&amp;quot;Cog_SO&amp;quot;)) )
+
+summary(random2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## wls(Cov = pooledS, aCov = aCov, n = tssem1.obj$total.n, Amatrix = Amatrix, 
+##     Smatrix = Smatrix, Fmatrix = Fmatrix, diag.constraints = diag.constraints, 
+##     cor.analysis = cor.analysis, intervals.type = intervals.type, 
+##     mx.algebras = mx.algebras, model.name = model.name, suppressWarnings = suppressWarnings, 
+##     silent = silent, run = run)
+## 
+## 95% confidence intervals: Likelihood-based statistic
+## Coefficients:
+##          Estimate Std.Error    lbound    ubound z value Pr(&amp;gt;|z|)
+## Cog2Per  0.122464        NA -0.197061  0.446654      NA       NA
+## SC2Per   0.323857        NA  0.108424  0.543235      NA       NA
+## SO2Per  -0.062671        NA -0.316275  0.191045      NA       NA
+## Cog2SC  -0.270792        NA -0.393385 -0.148645      NA       NA
+## SO2SC   -0.276514        NA -0.399589 -0.153555      NA       NA
+## var_Per  0.900200        NA  0.734669  0.977062      NA       NA
+## var_SC   0.771873        NA  0.689783  0.841777      NA       NA
+## cor      0.523108        NA  0.459007  0.587208      NA       NA
+## 
+## mxAlgebras objects (and their 95% likelihood-based CIs):
+##                 lbound    Estimate      ubound
+## Cog[1,1]    -0.1780060 -0.08769768 -0.02765545
+## SO[1,1]     -0.1754968 -0.08955092 -0.02888341
+## Cog_SO[1,1] -0.3141945 -0.17724859 -0.05953534
+## 
+## Goodness-of-fit indices:
+##                                             Value
+## Sample size                                633.00
+## Chi-square of target model                   0.00
+## DF of target model                           0.00
+## p value of target model                      0.00
+## Number of constraints imposed on &amp;quot;Smatrix&amp;quot;   2.00
+## DF manually adjusted                         0.00
+## Chi-square of independence model           323.17
+## DF of independence model                     6.00
+## RMSEA                                        0.00
+## RMSEA lower 95% CI                           0.00
+## RMSEA upper 95% CI                           0.00
+## SRMR                                         0.00
+## TLI                                          -Inf
+## CFI                                          1.00
+## AIC                                          0.00
+## BIC                                          0.00
+## OpenMx status1: 0 (&amp;quot;0&amp;quot; or &amp;quot;1&amp;quot;: The optimization is considered fine.
+## Other values indicate problems.)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们可以绘制模型并标记参数以进行检查。&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;my.plot &amp;lt;- meta2semPlot(random2, manNames=c(&amp;quot;Per&amp;quot;,&amp;quot;Cog&amp;quot;,&amp;quot;SO&amp;quot;,&amp;quot;SC&amp;quot;) )
+
+##画出模型图
+semPaths(my.plot, whatLabels=&amp;quot;path&amp;quot;, nCharEdges=10, nCharNodes=10,layout=&amp;quot;circle2&amp;quot;, color=&amp;quot;yellow&amp;quot;, edge.label.cex=0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;##画出参数估计图
+semPaths(my.plot, whatLabels=&amp;quot;est&amp;quot;, nCharNodes=10, layout=&amp;quot;circle2&amp;quot;,color=&amp;quot;green&amp;quot;, edge.label.cex=1.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;./post/metaSEM_files/figure-html/unnamed-chunk-22-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-15&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;&lt;strong&gt;附：如何导入数据&lt;/strong&gt;&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#相关矩阵的例子
+correlation &amp;lt;- list(matrix(c(1,0.6,0.3,0.5,1,0.5,0.3,0.6,1),nrow = 3,ncol = 3),
+                    matrix(c(1,0.7,0.2,0.4,1,0.4,0.2,0.7,1),nrow = 3,ncol = 3))
+
+#给相关矩阵加研究名
+names(correlation) &amp;lt;- c(&amp;quot;shun(2019)&amp;quot;, &amp;quot;peng(2018)&amp;quot;)
+
+#研究的类别等亚组变量
+type&amp;lt;-c(&amp;quot;China&amp;quot;,&amp;quot;USA&amp;quot;)
+
+#每个研究被试的人数
+N_participation&amp;lt;-c(201,208)
+
+#组合数据
+shun2020&amp;lt;-list(correlation,type,N_participation)
+
+#命名list
+names(shun2020) &amp;lt;- c(&amp;quot;data&amp;quot;, &amp;quot;country&amp;quot;,&amp;quot;n&amp;quot;)
+
+head(shun2020)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $data
+## $data$`shun(2019)`
+##      [,1] [,2] [,3]
+## [1,]  1.0  0.5  0.3
+## [2,]  0.6  1.0  0.6
+## [3,]  0.3  0.5  1.0
+## 
+## $data$`peng(2018)`
+##      [,1] [,2] [,3]
+## [1,]  1.0  0.4  0.2
+## [2,]  0.7  1.0  0.7
+## [3,]  0.2  0.4  1.0
+## 
+## 
+## $country
+## [1] &amp;quot;China&amp;quot; &amp;quot;USA&amp;quot;  
+## 
+## $n
+## [1] 201 208&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -386,217 +1490,6 @@ F Statistic
     </item>
     
     <item>
-      <title>Writing technical content in Academic</title>
-      <link>/post/writing-technical-content/</link>
-      <pubDate>Fri, 12 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>/post/writing-technical-content/</guid>
-      <description>&lt;p&gt;Academic is designed to give technical content creators a seamless experience. You can focus on the content and Academic handles the rest.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Highlight your code snippets, take notes on math classes, and draw diagrams from textual representation.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;On this page, you&#39;ll find some examples of the types of technical content that can be rendered with Academic.&lt;/p&gt;
-
-&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
-
-&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
-
-&lt;p&gt;Academic supports a Markdown extension for highlighting code syntax. You can enable this feature by toggling the &lt;code&gt;highlight&lt;/code&gt; option in your &lt;code&gt;config/_default/params.toml&lt;/code&gt; file.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;```python
-import pandas as pd
-data = pd.read_csv(&amp;quot;data.csv&amp;quot;)
-data.head()
-```
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import pandas as pd
-data = pd.read_csv(&amp;quot;data.csv&amp;quot;)
-data.head()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;math&#34;&gt;Math&lt;/h3&gt;
-
-&lt;p&gt;Academic supports a Markdown extension for $\LaTeX$ math. You can enable this feature by toggling the &lt;code&gt;math&lt;/code&gt; option in your &lt;code&gt;config/_default/params.toml&lt;/code&gt; file and adding &lt;code&gt;markup: mmark&lt;/code&gt; to your page front matter.&lt;/p&gt;
-
-&lt;p&gt;To render &lt;em&gt;inline&lt;/em&gt; or &lt;em&gt;block&lt;/em&gt; math, wrap your LaTeX math with &lt;code&gt;$$...$$&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Example &lt;strong&gt;math block&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-tex&#34;&gt;$$\gamma_{n} = \frac{ 
-\left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T 
-\left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}
-{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}$$
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;p&gt;&lt;span  class=&#34;math&#34;&gt;\[\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}\]&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;Example &lt;strong&gt;inline math&lt;/strong&gt; &lt;code&gt;$$\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2$$&lt;/code&gt; renders as &lt;span  class=&#34;math&#34;&gt;\(\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2\)&lt;/span&gt; .&lt;/p&gt;
-
-&lt;p&gt;Example &lt;strong&gt;multi-line math&lt;/strong&gt; using the &lt;code&gt;\\&lt;/code&gt; math linebreak:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-tex&#34;&gt;$$f(k;p_0^*) = \begin{cases} p_0^* &amp;amp; \text{if }k=1, \\
-1-p_0^* &amp;amp; \text {if }k=0.\end{cases}$$
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;p&gt;&lt;span  class=&#34;math&#34;&gt;\[f(k;p_0^*) = \begin{cases} p_0^* &amp; \text{if }k=1, \\
-1-p_0^* &amp; \text {if }k=0.\end{cases}\]&lt;/span&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;diagrams&#34;&gt;Diagrams&lt;/h3&gt;
-
-&lt;p&gt;Academic supports a Markdown extension for diagrams. You can enable this feature by toggling the &lt;code&gt;diagram&lt;/code&gt; option in your &lt;code&gt;config/_default/params.toml&lt;/code&gt; file or by adding &lt;code&gt;diagram: true&lt;/code&gt; to your page front matter.&lt;/p&gt;
-
-&lt;p&gt;An example &lt;strong&gt;flowchart&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;```mermaid
-graph TD;
-  A--&amp;gt;B;
-  A--&amp;gt;C;
-  B--&amp;gt;D;
-  C--&amp;gt;D;
-```
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;graph TD;
-  A--&amp;gt;B;
-  A--&amp;gt;C;
-  B--&amp;gt;D;
-  C--&amp;gt;D;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;An example &lt;strong&gt;sequence diagram&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;```mermaid
-sequenceDiagram
-  participant Alice
-  participant Bob
-  Alice-&amp;gt;John: Hello John, how are you?
-  loop Healthcheck
-      John-&amp;gt;John: Fight against hypochondria
-  end
-  Note right of John: Rational thoughts &amp;lt;br/&amp;gt;prevail...
-  John--&amp;gt;Alice: Great!
-  John-&amp;gt;Bob: How about you?
-  Bob--&amp;gt;John: Jolly good!
-```
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;sequenceDiagram
-  participant Alice
-  participant Bob
-  Alice-&amp;gt;John: Hello John, how are you?
-  loop Healthcheck
-      John-&amp;gt;John: Fight against hypochondria
-  end
-  Note right of John: Rational thoughts &amp;lt;br/&amp;gt;prevail...
-  John--&amp;gt;Alice: Great!
-  John-&amp;gt;Bob: How about you?
-  Bob--&amp;gt;John: Jolly good!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;An example &lt;strong&gt;Gantt diagram&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;```mermaid
-gantt
-  dateFormat  YYYY-MM-DD
-  section Section
-  A task           :a1, 2014-01-01, 30d
-  Another task     :after a1  , 20d
-  section Another
-  Task in sec      :2014-01-12  , 12d
-  another task      : 24d
-```
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-mermaid&#34;&gt;gantt
-  dateFormat  YYYY-MM-DD
-  section Section
-  A task           :a1, 2014-01-01, 30d
-  Another task     :after a1  , 20d
-  section Another
-  Task in sec      :2014-01-12  , 12d
-  another task      : 24d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;todo-lists&#34;&gt;Todo lists&lt;/h3&gt;
-
-&lt;p&gt;You can even write your todo lists in Academic too:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;- [x] Write math example
-- [x] Write diagram example
-- [ ] Do something else
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;input type=&#34;checkbox&#34; checked=&#34;&#34; disabled=&#34;&#34;&gt; Write math example&lt;/li&gt;
-&lt;li&gt;&lt;input type=&#34;checkbox&#34; checked=&#34;&#34; disabled=&#34;&#34;&gt; Write diagram example&lt;/li&gt;
-&lt;li&gt;&lt;input type=&#34;checkbox&#34; disabled=&#34;&#34;&gt; Do something else&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;tables&#34;&gt;Tables&lt;/h3&gt;
-
-&lt;p&gt;Represent your data in tables:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;First Header&lt;/th&gt;
-&lt;th&gt;Second Header&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;td&gt;Content Cell&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;asides&#34;&gt;Asides&lt;/h3&gt;
-
-&lt;p&gt;Academic supports a Markdown extension for asides, also referred to as &lt;em&gt;notices&lt;/em&gt; or &lt;em&gt;hints&lt;/em&gt;. By prefixing a paragraph with &lt;code&gt;A&amp;gt;&lt;/code&gt;, it will render as an aside. You can enable this feature by adding &lt;code&gt;markup: mmark&lt;/code&gt; to your page front matter, or alternatively using the &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/#alerts&#34;&gt;&lt;em&gt;Alert&lt;/em&gt; shortcode&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;A&amp;gt; A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;renders as&lt;/p&gt;
-
-&lt;aside&gt;
-&lt;p&gt;A Markdown aside is useful for displaying notices, hints, or definitions to your readers.&lt;/p&gt;
-&lt;/aside&gt;
-
-&lt;h3 id=&#34;did-you-find-this-page-helpful-consider-sharing-it-&#34;&gt;Did you find this page helpful? Consider sharing it 🙌&lt;/h3&gt;
-</description>
-    </item>
-    
-    <item>
       <title>An example preprint / working paper</title>
       <link>/publication/preprint/</link>
       <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
@@ -608,68 +1501,6 @@ gantt
 &lt;/div&gt;
 
 &lt;p&gt;Supplementary notes can be added here, including &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34;&gt;code and math&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Display Jupyter Notebooks with Academic</title>
-      <link>/post/jupyter/</link>
-      <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
-      <guid>/post/jupyter/</guid>
-      <description>
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from IPython.core.display import Image
-Image(&#39;https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;./academic_0_0.png&#34; alt=&#34;png&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(&amp;quot;Welcome to Academic!&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;Welcome to Academic!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;install-python-and-jupyter&#34;&gt;Install Python and Jupyter&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.anaconda.com/distribution/#download-section&#34; target=&#34;_blank&#34;&gt;Install Anaconda&lt;/a&gt; which includes Python 3 and Jupyter notebook.&lt;/p&gt;
-
-&lt;p&gt;Otherwise, for advanced users, install Jupyter notebook with &lt;code&gt;pip3 install jupyter&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;create-a-new-blog-post-as-usual-https-sourcethemes-com-academic-docs-managing-content-create-a-blog-post&#34;&gt;Create a new blog post &lt;a href=&#34;https://sourcethemes.com/academic/docs/managing-content/#create-a-blog-post&#34; target=&#34;_blank&#34;&gt;as usual&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;Run the following commands in your Terminal, substituting &lt;code&gt;&amp;lt;MY_WEBSITE_FOLDER&amp;gt;&lt;/code&gt; and &lt;code&gt;my-post&lt;/code&gt; with the file path to your Academic website folder and a name for your blog post (without spaces), respectively:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd &amp;lt;MY_WEBSITE_FOLDER&amp;gt;
-hugo new  --kind post post/my-post
-cd &amp;lt;MY_WEBSITE_FOLDER&amp;gt;/content/post/my-post/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;create-or-upload-a-jupyter-notebook&#34;&gt;Create or upload a Jupyter notebook&lt;/h2&gt;
-
-&lt;p&gt;Run the following command to start Jupyter within your new blog post folder. Then create a new Jupyter notebook (&lt;em&gt;New &amp;gt; Python Notebook&lt;/em&gt;) or upload a notebook.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;jupyter notebook
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;convert-notebook-to-markdown&#34;&gt;Convert notebook to Markdown&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;jupyter nbconvert Untitled.ipynb --to markdown --NbConvertApp.output_files_dir=.
-
-# Copy the contents of Untitled.md and append it to index.md:
-cat Untitled.md | tee -a index.md
-
-# Remove the temporary file:
-rm Untitled.md
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;edit-your-post-metadata&#34;&gt;Edit your post metadata&lt;/h2&gt;
-
-&lt;p&gt;Open &lt;code&gt;index.md&lt;/code&gt; in your text editor and edit the title etc. in the &lt;a href=&#34;https://sourcethemes.com/academic/docs/front-matter/&#34; target=&#34;_blank&#34;&gt;front matter&lt;/a&gt; according to your preference.&lt;/p&gt;
-
-&lt;p&gt;To set a &lt;a href=&#34;https://sourcethemes.com/academic/docs/managing-content/#featured-image&#34; target=&#34;_blank&#34;&gt;featured image&lt;/a&gt;, place an image named &lt;code&gt;featured&lt;/code&gt; into your post&amp;rsquo;s folder.&lt;/p&gt;
-
-&lt;p&gt;For other tips, such as using math, see the guide on &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34;&gt;writing content with Academic&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
@@ -898,237 +1729,7 @@ $$&lt;/p&gt;
     </item>
     
     <item>
-      <title>Academic: the website builder for Hugo</title>
-      <link>/post/getting-started/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/post/getting-started/</guid>
-      <description>
-
-&lt;p&gt;&lt;strong&gt;Create a free website with Academic using Markdown, Jupyter, or RStudio. Choose a beautiful color theme and build anything with the Page Builder - over 40 &lt;em&gt;widgets&lt;/em&gt;, &lt;em&gt;themes&lt;/em&gt;, and &lt;em&gt;language packs&lt;/em&gt; included!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://academic-demo.netlify.com/&#34; target=&#34;_blank&#34;&gt;Check out the latest &lt;strong&gt;demo&lt;/strong&gt;&lt;/a&gt; of what you&amp;rsquo;ll get in less than 10 minutes, or &lt;a href=&#34;https://sourcethemes.com/academic/#expo&#34; target=&#34;_blank&#34;&gt;view the &lt;strong&gt;showcase&lt;/strong&gt;&lt;/a&gt; of personal, project, and business sites.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#install&#34;&gt;&lt;strong&gt;Setup Academic&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/get-started/&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;Get Started&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/&#34; target=&#34;_blank&#34;&gt;View the documentation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://discuss.gohugo.io/&#34; target=&#34;_blank&#34;&gt;Ask a question&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/gcushen/hugo-academic/issues&#34; target=&#34;_blank&#34;&gt;Request a feature or report a bug&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Updating? View the &lt;a href=&#34;https://sourcethemes.com/academic/docs/update/&#34; target=&#34;_blank&#34;&gt;Update Guide&lt;/a&gt; and &lt;a href=&#34;https://sourcethemes.com/academic/updates/&#34; target=&#34;_blank&#34;&gt;Release Notes&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Support development of Academic:
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://paypal.me/cushen&#34; target=&#34;_blank&#34;&gt;Donate a coffee&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.patreon.com/cushen&#34; target=&#34;_blank&#34;&gt;Become a backer on Patreon&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.redbubble.com/people/neutreno/works/34387919-academic&#34; target=&#34;_blank&#34;&gt;Decorate your laptop or journal with an Academic sticker&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://academic.threadless.com/&#34; target=&#34;_blank&#34;&gt;Wear the T-shirt&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png&#34; &gt;
-
-&lt;img src=&#34;https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png&#34; &gt;
-&lt;/a&gt;
-
-&lt;/figure&gt;
-
-
-&lt;p&gt;&lt;strong&gt;Key features:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Page builder&lt;/strong&gt; - Create &lt;em&gt;anything&lt;/em&gt; with &lt;a href=&#34;https://sourcethemes.com/academic/docs/page-builder/&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;widgets&lt;/strong&gt;&lt;/a&gt; and &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;elements&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Edit any type of content&lt;/strong&gt; - Blog posts, publications, talks, slides, projects, and more!&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Create content&lt;/strong&gt; in &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;Markdown&lt;/strong&gt;&lt;/a&gt;, &lt;a href=&#34;https://sourcethemes.com/academic/docs/jupyter/&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;Jupyter&lt;/strong&gt;&lt;/a&gt;, or &lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-rstudio&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;RStudio&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Plugin System&lt;/strong&gt; - Fully customizable &lt;a href=&#34;https://sourcethemes.com/academic/themes/&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;color&lt;/strong&gt; and &lt;strong&gt;font themes&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Display Code and Math&lt;/strong&gt; - Code highlighting and &lt;a href=&#34;https://en.wikibooks.org/wiki/LaTeX/Mathematics&#34; target=&#34;_blank&#34;&gt;LaTeX math&lt;/a&gt; supported&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Integrations&lt;/strong&gt; - &lt;a href=&#34;https://analytics.google.com&#34; target=&#34;_blank&#34;&gt;Google Analytics&lt;/a&gt;, &lt;a href=&#34;https://disqus.com&#34; target=&#34;_blank&#34;&gt;Disqus commenting&lt;/a&gt;, Maps, Contact Forms, and more!&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Beautiful Site&lt;/strong&gt; - Simple and refreshing one page design&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Industry-Leading SEO&lt;/strong&gt; - Help get your website found on search engines and social media&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Media Galleries&lt;/strong&gt; - Display your images and videos with captions in a customizable gallery&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Mobile Friendly&lt;/strong&gt; - Look amazing on every screen with a mobile friendly version of your site&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Multi-language&lt;/strong&gt; - 15+ language packs including English, 中文, and Português&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Multi-user&lt;/strong&gt; - Each author gets their own profile page&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Privacy Pack&lt;/strong&gt; - Assists with GDPR&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Stand Out&lt;/strong&gt; - Bring your site to life with animation, parallax backgrounds, and scroll effects&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;One-Click Deployment&lt;/strong&gt; - No servers. No databases. Only files.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;color-themes&#34;&gt;Color Themes&lt;/h2&gt;
-
-&lt;p&gt;Academic comes with &lt;strong&gt;day (light) and night (dark) mode&lt;/strong&gt; built-in. Click the sun/moon icon in the top right of the &lt;a href=&#34;https://academic-demo.netlify.com/&#34; target=&#34;_blank&#34;&gt;Demo&lt;/a&gt; to see it in action!&lt;/p&gt;
-
-&lt;p&gt;Choose a stunning color and font theme for your site. Themes are fully customizable and include:&lt;/p&gt;
-
-
-
-
-
-
-
-
-
-  
-  
-
-
-&lt;div class=&#34;gallery&#34;&gt;
-
-  
-  
-  
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-1950s.png&#34; data-caption=&#34;1950s&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-1950s_huaf5482f8cea0c5a703a328640e3b7509_21614_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-apogee.png&#34; data-caption=&#34;Apogee&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-apogee_hu4b45d99db97150df01464c393bfd17d4_24119_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-coffee-playfair.png&#34; data-caption=&#34;Coffee theme with Playfair font&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-coffee-playfair_hu446a8f670cc5622adcc77b97ba95f6c5_22462_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-dark.png&#34; data-caption=&#34;Dark&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-dark_hu1e8601ecc47f58eada7743fdcd709d3d_21456_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-default.png&#34; data-caption=&#34;Default&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-default_huba6228b7bdf30e2f03f12ea91b2cba0d_21751_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-forest.png&#34; data-caption=&#34;Forest&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-forest_hu4f093a1c683134431456584193ea41ee_21797_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-ocean.png&#34; data-caption=&#34;Ocean&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-ocean_hu14831ccafc2219f30a7a096fa7617e01_21760_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-    
-    
-    
-    
-    
-      
-        
-      
-    
-  &lt;a data-fancybox=&#34;gallery-gallery&#34; href=&#34;./post/getting-started/gallery/theme-strawberry.png&#34; data-caption=&#34;Strawberry&#34;&gt;
-  &lt;img src=&#34;./post/getting-started/gallery/theme-strawberry_hu36b0b347fcca08bd39e2df22dcedbdfb_39532_0x190_resize_lanczos_2.png&#34; alt=&#34;&#34;&gt;
-  &lt;/a&gt;
-  
-
-  
-&lt;/div&gt;
-
-&lt;h2 id=&#34;ecosystem&#34;&gt;Ecosystem&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/sourcethemes/academic-admin&#34; target=&#34;_blank&#34;&gt;Academic Admin&lt;/a&gt;:&lt;/strong&gt; An admin tool to import publications from BibTeX or import assets for an offline site&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/sourcethemes/academic-scripts&#34; target=&#34;_blank&#34;&gt;Academic Scripts&lt;/a&gt;:&lt;/strong&gt; Scripts to help migrate content to new versions of Academic&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
-
-&lt;p&gt;You can choose from one of the following four methods to install:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-web-browser&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;one-click install using your web browser (recommended)&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-git&#34; target=&#34;_blank&#34;&gt;install on your computer using &lt;strong&gt;Git&lt;/strong&gt; with the Command Prompt/Terminal app&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-zip&#34; target=&#34;_blank&#34;&gt;install on your computer by downloading the &lt;strong&gt;ZIP files&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/install/#install-with-rstudio&#34; target=&#34;_blank&#34;&gt;install on your computer with &lt;strong&gt;RStudio&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Then &lt;a href=&#34;https://sourcethemes.com/academic/docs/get-started/&#34; target=&#34;_blank&#34;&gt;personalize and deploy your new site&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;updating&#34;&gt;Updating&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/update/&#34; target=&#34;_blank&#34;&gt;View the Update Guide&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Feel free to &lt;em&gt;star&lt;/em&gt; the project on &lt;a href=&#34;https://github.com/gcushen/hugo-academic/&#34; target=&#34;_blank&#34;&gt;Github&lt;/a&gt; to help keep track of &lt;a href=&#34;https://sourcethemes.com/academic/updates&#34; target=&#34;_blank&#34;&gt;updates&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;license&#34;&gt;License&lt;/h2&gt;
-
-&lt;p&gt;Copyright 2016-present &lt;a href=&#34;https://georgecushen.com&#34; target=&#34;_blank&#34;&gt;George Cushen&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Released under the &lt;a href=&#34;https://github.com/gcushen/hugo-academic/blob/master/LICENSE.md&#34; target=&#34;_blank&#34;&gt;MIT&lt;/a&gt; license.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>An example journal article</title>
+      <title>The Relationship between Maternal Extraversion and Adolescent Extraversion：Mediating and Moderating Model</title>
       <link>/publication/journal-article/</link>
       <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
       <guid>/publication/journal-article/</guid>
@@ -1145,56 +1746,6 @@ $$&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;Supplementary notes can be added here, including &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34;&gt;code and math&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      <guid>/post/2015-07-23-r-rmarkdown/</guid>
-      <description>
-
-
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &amp;lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Including Plots&lt;/h1&gt;
-&lt;p&gt;You can also embed plots. See Figure &lt;a href=&#34;#fig:pie&#34;&gt;1&lt;/a&gt; for example:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&amp;#39;Sky&amp;#39;, &amp;#39;Sunny side of pyramid&amp;#39;, &amp;#39;Shady side of pyramid&amp;#39;),
-  col = c(&amp;#39;#0292D8&amp;#39;, &amp;#39;#F7EA39&amp;#39;, &amp;#39;#C4B632&amp;#39;),
-  init.angle = -50, border = NA
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;./post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;
-Figure 1: A fancy pie chart.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 </description>
     </item>
     
