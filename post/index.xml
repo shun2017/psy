@@ -5,12 +5,156 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Shun Peng 2019</copyright><lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© Shun Peng 2019</copyright><lastBuildDate>Wed, 18 Sep 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon-192.png</url>
       <title>Posts</title>
       <link>/post/</link>
     </image>
+    
+    <item>
+      <title>共同方法偏差的影响因子及控制方法</title>
+      <link>/post/cmb/</link>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>/post/cmb/</guid>
+      <description>
+
+
+&lt;hr /&gt;
+&lt;p&gt;所谓共同方法偏差，举例来说，如果我们的研究假设是考察构念A与构念B之间的关系，基于理论，我们可以考察构念A与构念B的相关系数，但是，如果测量构念A和构念B的方法如果是一样的话，这种测量方法就可能会对两个构念的相关系数产生系统性的影响。&lt;/p&gt;
+&lt;p&gt;许多研究者认为共同方法偏差是行为研究的一个潜在问题。实际上探讨共同方法偏差的影响已经有大约60年的历史了，但是直到今天研究者们对这一问题的兴趣依然有增无减。&lt;/p&gt;
+&lt;p&gt;方法偏差成为一个问题，主要是由于它是测量误差的主要来源之一。而测量误差往往会威胁到我们研究结论的有效性。&lt;/p&gt;
+&lt;div id=&#34;section&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1.常见的共同方法偏差来源&lt;/h2&gt;
+&lt;div id=&#34;section-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1.1学科领域的差异&lt;/h3&gt;
+&lt;p&gt;对于不同领域或学科中的共同方法偏差检验主要来自于一些MTMM方法的元分析。例如， Cote和Buckley(1987)通过对70项MTMM方法的研究进行的元分析表明，大约有26.3%的方差可能是由于系统性的测量误差导致的，如常见的共同方法偏差。当然，他们也发现在不同的学科中的共同方法偏差存在着很大的差异，他们发现，在市场科学中的共同方法最低(15.8%)，在教学育中的共同方法偏差最大(30.5%)。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1.2方法之间的相关&lt;/h3&gt;
+&lt;p&gt;Cote和Buckley(1987)的研究表明，即便是让构念完全不相关，使用相同的方法也可以得到较高的相关。例如，在他们的研究中，态度的方法相关度达到了0.23，人格的相关度达到了0.17。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;2.方法偏差的潜在来源&lt;/h2&gt;
+&lt;div id=&#34;section-4&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.1评级等级的影响&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;主题一致性。大量的理论和研究表明，人们倾向于保持他们观点和认知的一致性，因此，不必感到惊讶，研究者们会理性的认为那些存在在相似领域或是同一水平的变量更容易产生关系。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;内隐的观念或错觉导致的结果。Kenny(1976)指出，虚假关联的产生是由于“研究者往往假设事件或变量的变化是同时发生，而这些假设可能会在测量相关性时引入系统性扭曲”。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;社会赞许性。它通常被认为这是一种个人倾向，不管他们对某一问题或话题的真实感受如何，都倾向于以一种积极的态度表现自己。这种倾向是有问题的，不仅因为它有可能对被试的回答产生偏见，也可能掩盖了两个或多个变量之间的真实关系(Ganster, Hennessey &amp;amp; Luthans, 1983)。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;对偏差宽松。对那些自认为非常了解和涉及自我的研究的误差较为宽松。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;默认偏见(赞成和反对)。是指被试无论问卷内容如何都倾向于赞成或反对的态度。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;心理状态。被试作答时的心理状态。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;情绪状态。被试作答时的情绪状态。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-5&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.2项目特征的影响&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;项目的社会赞许性。Thomas,Kilmann(1975)和Nederhof(1985)指出，除了社会赞许性可被视为被试在生活上的一种行为方式之外，它也可被视为问卷中项目的一种属性。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;项目的模糊性。尽管研究者应该开发尽可能清晰、简洁和具体的项目来度量他们感兴趣的变量，但在具体研究中，一些项目依然表述复杂或模棱两可。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;量表的样式和评级等级。研究者们常常用相似的量表结构(如，李克特量表，语义差异量表)或评分等级(如，&#34; extremely &#34; vs. &#34; some “，” always &#34; vs. &#34; never “，” strongly agree &#34; vs. &#34; strongly disagree &#34;)来测量不同的构念。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;积极或消极的项目词。一些研究人员试图通过在问卷中加入消极或反向编码的项目来减少被试固定反应模式的潜在影响(参考Hinkin, 1995;Idaszak &amp;amp; Drasgow，1987)。这里的基本逻辑是，反向编码的项目就像认知“减速带”，要求被试进行更多的控制，而不是自动的认知处理。不幸的是，研究表明，反向编码的项目可能会产生人为的反应因素，这些因素只包括消极的项目(Harvey, Billings， &amp;amp; Nilan, 1985)，这些项目可能会在以积极的方式重写之后某些因子就消失了(Idaszak &amp;amp; Drasgow, 1987)。例如，有研究者就认为自尊量表就存在着积极自尊和消极自尊两个因子。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-6&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.3项目的文本效应&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;项目的启动效应。某些项目对被试的启动效应会导致被试的反应受到影响。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;项目嵌入的位置。Harrison和McLaughlin(1993)认为，在积极词或消极词的语境中嵌入的中性项目，将使得这些项目具有这些消极或积极的评价性质，并且这个过程可能影响到随后这些项目之间的关系考察。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;文本诱发的情绪。一份问卷上的某些项目的措辞可能会引起被试的情绪，从而影响他们对问卷上其余项目的反应方式。例如，问卷中那些引起被试对研究者意图的怀疑的项目，或者那些侮辱被调查者的项目（如，与种族、种族或性别刻板印象有关），可能会使被试倾向于以消极的情绪状态完成问卷。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;量表的长度。Harrison, McLaughlin和Coalter(1996)注意到，包含较少项目的量表增加了受访者对以前量表答案的可访问性，而较多项目的量表会导致被试产生疲劳或烦躁的感受。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;问卷的项目或构念的混合。&lt;strong&gt;当前大部分基于问卷的心理学研究都要谨慎的对待这一问题。&lt;/strong&gt;研究者们在同一份问卷中混合不同构念的项目并不罕见。的确，Kline等人(2000)建议采用这种方法来减少常用方法的方差。然而，如果问卷上的构念相似(如工作特征和工作满意度)，这种做法的一个可能结果是，它可能增加构念间的相关性，同时减少构念内的相关性，因此，在问卷中混合项目可能会导致构念之间产生人为的共变。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-7&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2.4 测试的环境效应&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;测试的时间和地点。在同一时间和地点测量的也可能增加某种系统的共变性。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;基于同一媒介的测量。使用同一几个变量的关系，会影响它们之间的共同方法偏差。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-8&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;3.方法偏差影响被试行为的过程&lt;/h2&gt;
+&lt;p&gt;一旦确定了在特定情况下可能出现的方法偏差，下一步就是开发程序，将其影响降到最低。然而，要做到这一点，我们必须了解这些偏见是如何影响被试的反应过程的。&lt;/p&gt;
+&lt;p&gt;一般而言，量表反应过程及这一过程中可能存的方法偏差来源如表1所示。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;表1 常见的方法偏差如何影响问题的回答过程&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width=&#34;17%&#34; /&gt;
+&lt;col width=&#34;63%&#34; /&gt;
+&lt;col width=&#34;19%&#34; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th&gt;响应的各个阶段&lt;/th&gt;
+&lt;th&gt;每个阶段所涉及的活动&lt;/th&gt;
+&lt;th&gt;潜在的方法偏差&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;理解&lt;/td&gt;
+&lt;td&gt;关注问题和指示，表示问题的逻辑形式，识别需要的信息，并将关键术语链接到相关概念&lt;/td&gt;
+&lt;td&gt;项目模糊性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;检索&lt;/td&gt;
+&lt;td&gt;生成检索策略和线索，检索特定的和一般的记忆，并填补丢失的细节&lt;/td&gt;
+&lt;td&gt;测试环境，问题环境，项目嵌入，项目混合，启动效应，情绪状态和社会赞许性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;判断&lt;/td&gt;
+&lt;td&gt;评估记忆的完整性和准确性，基于可达性进行推理，填补被回忆内容的空白，整合检索的材料，基于部分检索进行估计&lt;/td&gt;
+&lt;td&gt;内在一致性，内隐，启动效应，项目要求特征，项目诱导的情绪状态&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;选择反应&lt;/td&gt;
+&lt;td&gt;将判断映射到响应类别&lt;/td&gt;
+&lt;td&gt;量表的样式和评级等级&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;报告反应&lt;/td&gt;
+&lt;td&gt;编辑一致性、可接受性或其他标准的响应&lt;/td&gt;
+&lt;td&gt;内在一致性，对偏差宽松，要求特征和社会赞许&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-9&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;4.控制共同方法偏差的技术&lt;/h2&gt;
+&lt;p&gt;控制共同方法偏差主要有两个途径：（1)严谨的实验流程，（2）统计控制。&lt;/p&gt;
+&lt;div id=&#34;section-10&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;4.1实验流程控制&lt;/h3&gt;
+&lt;p&gt;通过实验过程来控制方法偏差的关键是确定变量之间的度量有哪些共同之处，并通过本研究的设计消除或最小化这些共同之处。变量之间的联系可能来自(a)被试，(b)测量环境或问卷本身内的上下文线索，和/或(c)问题的具体措辞和格式。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;通过不同的方式来获取不同变量的度量值。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;将不同变量的测量的时间分离开来。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;测量距离较远的心理特征。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;保护被试的匿名性。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;平衡项目的顺序。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;增加项目的有效性。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-11&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;4.2统计控制&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Harman的单因素检验。此方法是研究人员用来解决共同方法方差问题的最广泛使用的技术之一。这项技术的基本要点是，如果变量之间存在大量的共同方法方差，则(a)因子分析将产生一个单一因子，或(b)一个共同因子将占变量之间协方差的大部分。尽管这一方法具有明显的吸引力(容易实现)，但它也有一些局限性，尽管使用单因素测试可以提供一个指示，即单因素是否可以解释所有项之间的协方差，但这个过程实际上对统计控制(或部分排除)方法偏差没有任何作用。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;为控制方法偏差而设计的偏相关程序：（1）排除社会赞许或情感因子；（2）排除“标记”变量；（3）排除共同因子。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-12&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;5.共同方法偏差控制方法推荐&lt;/h2&gt;
+&lt;p&gt;对于如何控制共同方法偏差，各位可以参考以下两图，以及论文Common Method Biases in Behavioral Research: A Critical Review of the
+Literature and Recommended Remedies。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;D:/datashop/po5.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;D:/datashop/po4.png&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>元分析结构方程模型</title>
