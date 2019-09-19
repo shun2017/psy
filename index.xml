@@ -106,6 +106,87 @@
     </item>
     
     <item>
+      <title>blogdown example</title>
+      <link>/post/blogdown_example/</link>
+      <pubDate>Thu, 19 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>/post/blogdown_example/</guid>
+      <description>
+
+
+&lt;div id=&#34;section&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;第1章 入门&lt;/h1&gt;
+&lt;p&gt;在本章中，我们将展示如何从头开始创建一个简单的网站。 该网站将包含:一个主页，一个“关于”页面，一个R Markdown帖子和一个简单的Markdown帖子。 您将学习使用&lt;a href=&#34;https://www.rstudio.com/resources/webinars/introducing-blogdown/&#34;&gt;blogdown&lt;/a&gt;创建网站的基本概念。 对于初学者，我们建议您开始使用RStudio IDE。 RStudio IDE可以使一些事情变得更容易，但如果您不想使用RStudio，您可以自由使用任何编辑器。&lt;/p&gt;
+&lt;div id=&#34;section-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1.1安装&lt;/h2&gt;
+&lt;p&gt;我们假设你已经安装了R（&lt;a href=&#34;https://www.r-project.org&#34; class=&#34;uri&#34;&gt;https://www.r-project.org&lt;/a&gt;）和RStudio IDE(&lt;a href=&#34;https://www.rstudio.com&#34; class=&#34;uri&#34;&gt;https://www.rstudio.com&lt;/a&gt;)。 如果您没有安装RStudio IDE，请安装Pandoc（&lt;a href=&#34;http://pandoc.org&#34; class=&#34;uri&#34;&gt;http://pandoc.org&lt;/a&gt;）,Rstudio版本0.99之后的就不需要了。 接下来我们需要在R中安装blogdown软件包。它可以在CRAN和GitHub上使用，通过使用以下命令安装：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## Install from CRAN
+#install.packages(&amp;quot;blogdown&amp;quot;)
+## Or, install from GitHub
+#if (!requireNamespace(&amp;quot;devtools&amp;quot;)) install.packages(&amp;quot;devtools&amp;quot;)
+#devtools::install_github(&amp;quot;rstudio/blogdown&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;由于blogdown基于静态站点生成器Hugo（&lt;a href=&#34;https://gohugo.io&#34; class=&#34;uri&#34;&gt;https://gohugo.io&lt;/a&gt;），因此还需要安装Hugo。 blogdown中有一个辅助函数可以在主要操作系统（Windows，macOS和Linux）上自动下载和安装它：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#blogdown::install_hugo()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;默认情况下，它会安装最新版本的Hugo，当然，也可以通过version参数选择特定版本。对于macOS用户，install_hugo（）需要使用包管理器Homebrew（&lt;a href=&#34;https://brew.sh&#34; class=&#34;uri&#34;&gt;https://brew.sh&lt;/a&gt;）（如果已经安装），否则它只是直接下载Hugo二进制文件。&lt;/p&gt;
+&lt;div id=&#34;section-2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1.1.1更新&lt;/h3&gt;
+&lt;p&gt;要升级或重新安装Hugo，可以使用blogdown :: update_hugo（），它等同于install_hugo（force = TRUE）。 您可以通过blogdown :: hugo_version（）查看已安装的Hugo版本，并在&lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34; class=&#34;uri&#34;&gt;https://github.com/gohugoio/hugo/releases&lt;/a&gt;上找到最新版本的Hugo。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;section-3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1.2一个简单的例子&lt;/h2&gt;
+&lt;p&gt;根据我们的经验，Hugo的文档可能对初学者来说有点令人生畏.例如，它的“快速入门”指南过去常常有12个步骤，如果您没有使用静态网站生成器，很容易迷失。对于blogdown，我们希望所有级别的用户都能尽快开始。你可能希望为网站调整许多内容但第一步实际上非常简单：在RStudio IDE（File - &amp;gt; New Project）中的新目录下创建一个新项目，并在R中调用该函数：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#setwd(&amp;quot;D:/learning R/Rmarkdown/blogdown&amp;quot;)
+#blogdown::new_site()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后等待此功能创建一个新站点，下载默认主题，添加一些示例帖子，打开它们，构建站点，然后在RStudio Viewer中启动它，这样您就可以立即预览它。 如果你不使用RStudio IDE，你需要确保你当前在一个空的目录，在这种情况下new_site（）会做同样的事情，但网站将在你的网页浏览器而不是RStudio Viewer中启动。&lt;/p&gt;
+&lt;p&gt;现在你应该在RStudio项目或当前工作目录下看到一堆目录和文件。 在我们解释这些新目录和文件之前，让我们先介绍一个重要且有用的技术：LiveReload。 这意味着当你修改网站的任何源文件并保存时，您的网站将自动重建并重新加载到您的网络浏览器中。 基本上，一旦你在Web浏览器中启动网站，就不需要再显式重建它。 您需要做的就是编辑源文件，例如R Markdown文档，然后保存它们。 无需单击任何按钮或运行任何命令。 LiveReload是通过blogdown :: serve_site（）实现的，默认情况下它基于R包servr（Xie 2019b）。&lt;/p&gt;
+&lt;p&gt;new_site（）函数有几个参数，您可以查看其R帮助页面（？blogdown :: new_site）以获取详细信息。&lt;/p&gt;
+&lt;p&gt;你必须了解基于Hugo的网站的三个最基本的概念：&lt;/p&gt;
+&lt;p&gt;1）配置文件config.toml，你可以在其中为站点指定一些全局设置。 即使你现在还不知道TOML是什么（它将在第2章介绍），你仍然可以改变一些明显的设置。 例如，您可能会在config.toml中看到类似这样的配置：&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#baseurl = &amp;quot;/&amp;quot;
+#languageCode = &amp;quot;en-us&amp;quot;
+#title = &amp;quot;A Hugo website&amp;quot;
+#theme = &amp;quot;hugo-lithium&amp;quot;
+
+#[[menu.main]]
+    #name = &amp;quot;About&amp;quot;
+    #url = &amp;quot;/about/&amp;quot;
+#[[menu.main]]
+    #name = &amp;quot;GitHub&amp;quot;
+    #url = &amp;quot;https://github.com/rstudio/blogdown&amp;quot;
+#[[menu.main]]
+    #name = &amp;quot;Twitter&amp;quot;
+    #url = &amp;quot;https://twitter.com/rstudio&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;你可以更改网站标题，例如title =“我自己网站”，并更新GitHub和Twitter网址。&lt;/p&gt;
+&lt;p&gt;2)内容目录（默认情况下为content /）。 你可以在此处为帖子和页面编写R Markdown或Markdown源文件。 在默认网站的内容/下，您可以看到about.md和包含一些帖子的帖子/目录。 内容目录的组织由你自己决定。 你可以在那里拥有任意文件和目录，具体取决于您想要的网站结构。&lt;/p&gt;
+&lt;p&gt;3)发布目录（默认为public /）。 你的网站将生成到此目录，这意味着您无需手动将任何文件添加到此目录.通常，它包含许多* .html文件和依赖项，如* .css，* .js和images。 你可以将公共/所有内容上传到可以为静态网站提供服务的任何Web服务器，并且你的网站将启动并运行。 发布静态网站有很多选择，如果您不熟悉部署网站，我们将在第3章中详细介绍它们。&lt;/p&gt;
+&lt;p&gt;如果你对此默认主题感到满意，基本上可以开始编写和发布新网站了！ 我们将在1.6节中展示如何使用其他主题。 但是，请记住，更复杂和更漂亮的主题可能需要您了解更多有关所有底层技术，如Hugo模板语言，HTML，CSS和JavaScript。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rstudio-ide&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1.3 RStudio IDE&lt;/h2&gt;
+&lt;p&gt;有一些基本的RStudio插件可以轻松编辑和预览你的网站，你可以在RStudio工具栏的“Addins”菜单中找到它们：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;“Serve Site”: 此插件调用blogdown :: serve_site（）以使用LiveReload技术在本地持续为你的网站提供服务，因此你可以实时预览网站。你可以在预览时继续编辑网站的材料。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;“New Post”: 此插件提供了一个对话框，供您输入博客文章的元数据，包括标题，作者，日期等。 有关示例，请参见图1.2。 这个插件实际上调用了函数blogdown :: new_post（），但是会自动执行以下操作：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;当键入帖子的标题时，它将会生成文件名，如果你不喜欢自动生成的文件名，则可以编辑它。 实际上，还可以使用此插件在content /下的任何目录下创建普通页面。 例如，如果要添加简历页面，可以从默认发布/ YYYY-mm-dd-resume.md将文件名更改为resume.md。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;也可以从Shiny提供的日历小部件中选择日期.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;它将扫描现有帖子的类别和标签，因此当你想要输入类别或标签时，可以从下拉菜单中选择它们，或创建新的。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建新帖子后，它将自动打开，因此你可以立即开始编写内容。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;“Update Metadata”:插件允许您更新当前打开的帖子的YAML元数据。 此插件的主要优点是您可以从下拉菜单中选择类别和标签，而不必记住它们。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;“Insert Image”:此插件允许你将计算机中的任何图像插入当前打开的帖子。此插件将图像复制到帖子文件的最终位置，并添加Markdown / HTML代码以嵌入图像。 你可以指定图像的宽度和高度，以及替代文本。 插件将在上载图像后显示最终图像文件路径。 如有必要，你可以编辑路径。 如果图像已经存在，则插件将询问您是否要覆盖它，如图1.5所示：如果有疑问，请更改“目标文件路径”文本输入中的名称，以避免与先前插入的图像冲突。。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用这些插件，你应该很少需要在设置网站后手动运行任何R命令，因为所有帖子都会在您创建新帖子或由于LiveReload功能修改现有帖子时自动编译。&lt;/p&gt;
+&lt;p&gt;如果你的RStudio版本是v1.1.383以上，你实际上可以直接从File -&amp;gt; New Project -&amp;gt; New Directory&lt;/p&gt;
+&lt;p&gt;如果你的网站是第一次使用blogdown :: new_site（）函数而不是RStudio菜单创建的，则可以退出RStudio并再次打开该项目。 如果您进入菜单工具项目选项，您的项目类型应该是“网站”&lt;/p&gt;
+&lt;p&gt;然后你会在RStudio中看到一个名为“Build”的窗格，并且有一个按钮“Build Website。”当你点击这个按钮时，RStudio将调用blogdown :: build_site（）来构建网站。 这将自动生成public / directory中的文件.13如果要构建网站并在public / manual下发布输出文件，建议您每次重新启动R会话并单击此“Build Website”按钮 发布网站，而不是发布blogdown :: serve_site（）连续自动生成的公共/文件夹，因为后者调用blogdown :: build_site（local = TRUE），这与blogdown :: build_site（local = FALSE）有一些细微差别 FALSE）（详见D.3节）。&lt;/p&gt;
+&lt;p&gt;强烈建议你在RStudio项目选项中取消选中“在构建后预览网站”选项。你也可以取消选中“在支持文件更改时重新编写当前预览”选项，因为此选项在调用serve_site（）之后并不真正有用。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>共同方法偏差的影响因子及控制方法</title>
       <link>/post/cmb/</link>
       <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
